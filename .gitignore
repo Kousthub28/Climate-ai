@@ -1,0 +1,8 @@
+        climate-ai-app/
+        gemini_service.py
+        package.json
+        pnpm-lock.yaml
+        test-watsonx.js
+        climate-ai-app\frontend\climate-ai-frontend\node_modules\
+        climate-ai-app\backend\node_modules\
+        
