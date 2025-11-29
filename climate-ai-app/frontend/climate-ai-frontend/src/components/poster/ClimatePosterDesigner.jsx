@@ -1,33 +1,38 @@
 import React, { useState } from 'react';
+import { posterAPI } from '../../services/api';
+import { Button } from '../ui/button';
 
-export default function ClimatePosterDesigner() {
+const ClimatePosterDesigner = () => {
   const [open, setOpen] = useState(false);
-  const [input, setInput] = useState('');
-  const [poster, setPoster] = useState(null);
+  const [prompt, setPrompt] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleGenerate = async () => {
     setLoading(true);
-    setPoster(null);
-    const res = await fetch('/api/genai-poster', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userInput: input }),
-    });
-    const data = await res.json();
-    setPoster(data);
-    setLoading(false);
+    setError('');
+    setImageUrl('');
+    try {
+      const res = await posterAPI.generatePoster(prompt);
+      setImageUrl(res.data.imageUrl);
+    } catch (err) {
+      setError('Failed to generate poster. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
+      {/* Floating Button */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
           style={{
             position: 'fixed',
-            bottom: 120,
-            right: 32,
+            bottom: 170,
+            right: 20,
             zIndex: 1000,
             background: '#2563eb',
             color: '#fff',
@@ -43,23 +48,24 @@ export default function ClimatePosterDesigner() {
             justifyContent: 'center',
             transition: 'background 0.2s',
           }}
-          title="Design Climate Poster"
+          title="Open Climate GenAI Designer"
         >
-          🎨
+          🧬
         </button>
       )}
+      {/* Designer Modal/Popup */}
       {open && (
         <div style={{
           position: 'fixed',
-          bottom: 120,
+          bottom: 32,
           right: 32,
           zIndex: 1001,
           background: '#fff',
           borderRadius: 16,
           boxShadow: '0 4px 24px rgba(0,0,0,0.16)',
           padding: 32,
-          width: 400,
-          maxWidth: '90vw',
+          width: 420,
+          maxWidth: '95vw',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -80,14 +86,16 @@ export default function ClimatePosterDesigner() {
           >
             ×
           </button>
-          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#2563eb' }}>Climate Poster Designer</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#2563eb' }}>Climate GenAI Designer</h2>
           <div style={{ color: '#4b5563', marginBottom: 18, fontSize: 15, textAlign: 'center' }}>
-            Describe your poster (e.g., water saving for kids)
+            Generate banners, posters, or flyers for climate campaigns. Try prompts like:<br />
+            <em>"Design a poster about water saving for kids"</em>
           </div>
           <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="Describe your poster"
+            type="text"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            placeholder="Describe your climate poster..."
             style={{
               width: '100%',
               padding: '12px 14px',
@@ -100,42 +108,33 @@ export default function ClimatePosterDesigner() {
             }}
             onKeyDown={e => { if (e.key === 'Enter') handleGenerate(); }}
           />
-          <button
+          <Button
             onClick={handleGenerate}
-            disabled={loading || !input}
-            style={{
-              background: '#2563eb',
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: 16,
-              padding: '10px 24px',
-              border: 'none',
-              borderRadius: 8,
-              cursor: loading || !input ? 'not-allowed' : 'pointer',
-              marginBottom: 10,
-              transition: 'background 0.2s',
-            }}
+            disabled={loading || !prompt}
+            style={{ width: '100%', marginBottom: 10 }}
           >
             {loading ? 'Generating...' : 'Generate Poster'}
-          </button>
-          {poster && (
-            <div style={{
-              marginTop: 18,
-              background: '#f6fef9',
-              padding: 16,
-              borderRadius: 10,
-              width: '100%',
-              color: '#1a3a2a',
-              fontSize: 15,
-              lineHeight: 1.6,
-              boxShadow: '0 2px 8px rgba(22,163,74,0.06)',
-            }}>
-              <img src={poster.imageUrl} alt="Poster" style={{ width: '100%', borderRadius: 8 }} />
-              <div style={{ fontWeight: 600, marginTop: 10 }}>{poster.caption}</div>
+          </Button>
+          {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
+          {imageUrl && (
+            <div style={{ marginTop: 18, width: '100%', textAlign: 'center' }}>
+              <img
+                src={imageUrl}
+                alt="Generated Climate Poster"
+                style={{
+                  maxWidth: '100%',
+                  borderRadius: 12,
+                  boxShadow: '0 2px 8px rgba(37,99,235,0.08)',
+                  marginBottom: 8,
+                }}
+              />
+              <div style={{ color: '#2563eb', fontWeight: 500, fontSize: 15 }}>Right-click to save your poster!</div>
             </div>
           )}
         </div>
       )}
     </>
   );
-} 
+};
+
+export default ClimatePosterDesigner; 

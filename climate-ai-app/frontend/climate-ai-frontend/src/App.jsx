@@ -16,6 +16,7 @@ import ClimateAnalysis from './components/climate/ClimateAnalysis';
 import FloatingChatWidget from './components/chat/FloatingChatWidget';
 import RagAdvisor from './components/rag/RagAdvisor';
 import ClimatePosterDesigner from './components/poster/ClimatePosterDesigner';
+import Settings from './components/settings/Settings';
 import './App.css';
 
 // Protected Route Component
@@ -141,10 +142,7 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <ProtectedRoute>
-              <div className="p-6">
-                <h1 className="text-2xl font-bold">Settings</h1>
-                <p>Settings page coming soon...</p>
-              </div>
+              <Settings />
             </ProtectedRoute>
           }
         />
@@ -179,15 +177,14 @@ const AppRoutes = () => {
 function App() {
   return (
     <AuthProvider>
-      <ClimatePosterDesigner />
       <RagAdvisor />
       <Router>
         <AppRoutes />
         <FloatingChatWidget />
+        <ClimatePosterDesigner />
       </Router>
     </AuthProvider>
   );
 }
 
 export default App;
-

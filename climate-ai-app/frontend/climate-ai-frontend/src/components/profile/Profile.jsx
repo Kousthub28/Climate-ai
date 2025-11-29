@@ -177,57 +177,9 @@ const Profile = () => {
               </form>
             </DialogContent>
           </Dialog>
-          <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="w-full flex items-center justify-start" onClick={() => setSettingsOpen(true)}>
-                <Settings className="mr-2 h-4 w-4" /> Settings
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitleUI>Settings</DialogTitleUI>
-                <DialogDescription>Change your password below.</DialogDescription>
-              </DialogHeader>
-              <form onSubmit={handleSettingsSubmit} className="space-y-4">
-                <Input
-                  name="currentPassword"
-                  value={passwordData.currentPassword}
-                  onChange={handleSettingsChange}
-                  type="password"
-                  placeholder="Current Password"
-                  required
-                />
-                <Input
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handleSettingsChange}
-                  type="password"
-                  placeholder="New Password"
-                  required
-                />
-                <Input
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handleSettingsChange}
-                  type="password"
-                  placeholder="Confirm New Password"
-                  required
-                />
-                {settingsError && (
-                  <Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>{settingsError}</AlertDescription></Alert>
-                )}
-                {settingsSuccess && (
-                  <Alert variant="default"><AlertTitle>Success</AlertTitle><AlertDescription>{settingsSuccess}</AlertDescription></Alert>
-                )}
-                <DialogFooter>
-                  <Button type="submit" disabled={settingsLoading}>{settingsLoading ? 'Saving...' : 'Change Password'}</Button>
-                  <DialogClose asChild>
-                    <Button type="button" variant="outline">Cancel</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <Button variant="outline" className="w-full flex items-center justify-start" onClick={() => navigate('/settings')}>
+            <Settings className="mr-2 h-4 w-4" /> Settings
+          </Button>
           <Button variant="destructive" className="w-full flex items-center justify-start" onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" /> Logout
           </Button>

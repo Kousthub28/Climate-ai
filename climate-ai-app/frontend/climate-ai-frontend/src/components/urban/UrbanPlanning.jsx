@@ -1,870 +1,672 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import {
-  Building,
-  TreePine,
-  Car,
-  Zap,
-  Droplets,
-  Wind,
-  MapPin,
-  TrendingUp,
-  TrendingDown,
-  Target,
-  Lightbulb,
-  Users,
-  Factory,
-  Home,
-  Bus,
-  Recycle,
-  Sun,
-  Leaf,
-  BarChart3,
-  Map,
-  Calculator,
-  Brain,
-} from 'lucide-react';
-import { urbanAPI, chatAPI } from '../../services/api';
-import '../../App.css';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle as DialogTitleUI, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import html2pdf from 'html2pdf.js';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { ResponsiveContainer, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { Lightbulb, TrendingUp, TrendingDown, Leaf, Zap, Car, Trash2, ShoppingBag, Droplets, Utensils, Globe, Award, Trophy, Flame, Star } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import html2canvas from 'html2canvas';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip as LeafletTooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import * as L from 'leaflet';
+
+const regionCoords = {
+  'India': [20.5937, 78.9629],
+  'USA': [37.0902, -95.7129],
+  'Germany': [51.1657, 10.4515],
+  'Brazil': [-14.2350, -51.9253],
+  'Australia': [-25.2744, 133.7751],
+  // Add more as needed
+};
 
 const UrbanPlanning = () => {
-  const { user } = useAuth();
-  const [cityData, setCityData] = useState({
-    name: 'New York City',
-    population: 8400000,
-    area: 783, // km²
-    sustainability: {
-      score: 72,
-      rank: 15,
-      categories: {
-        energy: 78,
-        transportation: 65,
-        waste: 80,
-        greenSpace: 68,
-        airQuality: 70,
-        waterManagement: 75,
-      }
-    },
-    infrastructure: {
-      greenBuildings: 1250,
-      renewableEnergy: 35, // percentage
-      publicTransport: 85, // coverage percentage
-      recyclingRate: 67,
-      greenSpaces: 23, // percentage of city area
-      electricVehicles: 12, // percentage of vehicles
-    },
-    challenges: [
-      {
-        id: 1,
-        title: 'Air Quality Improvement',
-        priority: 'High',
-        impact: 'High',
-        description: 'Reduce air pollution through better traffic management and industrial regulations.',
-        solutions: ['Electric bus fleet', 'Low emission zones', 'Industrial filters'],
-        timeline: '2-3 years',
-        cost: '$2.5B',
-      },
-      {
-        id: 2,
-        title: 'Urban Heat Island Effect',
-        priority: 'High',
-        impact: 'Medium',
-        description: 'Mitigate rising temperatures through green infrastructure and cool roofing.',
-        solutions: ['Green roofs', 'Urban forests', 'Cool pavements'],
-        timeline: '3-5 years',
-        cost: '$1.8B',
-      },
-      {
-        id: 3,
-        title: 'Waste Management Optimization',
-        priority: 'Medium',
-        impact: 'Medium',
-        description: 'Improve recycling rates and implement circular economy principles.',
-        solutions: ['Smart bins', 'Waste-to-energy', 'Composting programs'],
-        timeline: '1-2 years',
-        cost: '$800M',
-      },
-    ],
-    projects: [
-      {
-        id: 1,
-        name: 'Central Park Expansion',
-        type: 'Green Infrastructure',
-        status: 'In Progress',
-        completion: 65,
-        budget: '$150M',
-        impact: 'Increase green space by 15%',
-        timeline: '2024-2026',
-      },
-      {
-        id: 2,
-        name: 'Smart Traffic System',
-        type: 'Transportation',
-        status: 'Planning',
-        completion: 20,
-        budget: '$300M',
-        impact: 'Reduce traffic congestion by 25%',
-        timeline: '2025-2027',
-      },
-      {
-        id: 3,
-        name: 'Solar Panel Initiative',
-        type: 'Energy',
-        status: 'Active',
-        completion: 80,
-        budget: '$500M',
-        impact: 'Add 200MW renewable capacity',
-        timeline: '2023-2025',
-      },
-    ]
-  });
-  const [selectedScenario, setSelectedScenario] = useState('current');
-  const [aiRecommendations, setAiRecommendations] = useState([]);
+  const [csvData, setCsvData] = useState([]);
+  const [headers, setHeaders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [reportOpen, setReportOpen] = useState(false);
-  const reportRef = React.useRef();
-  const [mapOpen, setMapOpen] = useState(false);
-  // Default to New York City if no coordinates
-  const cityLat = cityData?.lat || 40.7128;
-  const cityLng = cityData?.lng || -74.0060;
+  const [error, setError] = useState('');
+  const [regionOptions, setRegionOptions] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [compareRegion, setCompareRegion] = useState('');
+  const [drilldown, setDrilldown] = useState({ open: false, category: '', year: '' });
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const trendsChartRef = useRef();
+  const breakdownChartRef = useRef();
 
-  const [challenges, setChallenges] = useState([]);
-  const [expandedId, setExpandedId] = useState(null);
-  const [aiInsight, setAiInsight] = useState({});
-  const [city, setCity] = useState('New York City');
-  const [metrics, setMetrics] = useState({}); // e.g., { energy: 78, transportation: 65, ... }
-
+  // Fetch CSV data
   useEffect(() => {
-    // Fetch challenges and metrics from backend
-    const fetchData = () => {
-      fetch(`/api/urban/challenges?city=${encodeURIComponent(city)}`)
-        .then(res => res.json())
-        .then(data => setChallenges(Array.isArray(data) ? data : []));
-      fetch(`/api/urban/metrics?city=${encodeURIComponent(city)}`)
-        .then(res => res.json())
-        .then(data => setMetrics(data));
-    };
-    fetchData();
-    const interval = setInterval(fetchData, 30000); // refresh every 30s
-    return () => clearInterval(interval);
-  }, [city]);
-
-  const handleViewDetails = async (id, challenge) => {
-    setExpandedId(id);
-    const res = await fetch('/api/ai/urban-insight', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ challenge, city, metrics })
-    });
-    const data = await res.json();
-    setAiInsight(prev => ({ ...prev, [id]: data.insight }));
-  };
-
-  // Remove the real-time OpenAQ air quality form and related logic
-
-  useEffect(() => {
-    loadUrbanData();
-    loadAIRecommendations();
+    setLoading(true);
+    setError('');
+    fetch('/api/urban/csv-analysis')
+      .then(res => res.json())
+      .then(data => {
+        setHeaders(data.headers);
+        setCsvData(data.data);
+        // Build region options
+        const regions = Array.from(
+          new Set(
+            (Array.isArray(data.data) ? data.data.map(row => (row.region || '').trim()) : []).filter(Boolean)
+          )
+        );
+        setRegionOptions(regions);
+        if (regions.length > 0) setSelectedRegion(regions[0]);
+        // Set default date range (YYYY-MM)
+        const months = Array.from(new Set((data.data || []).map(row => row.date?.slice(0, 7)).filter(Boolean))).sort();
+        if (months.length > 0) setDateRange({ start: months[0], end: months[months.length - 1] });
+      })
+      .catch(() => setError('Failed to load carbon emissions data.'))
+      .finally(() => setLoading(false));
   }, []);
 
-  const loadUrbanData = async () => {
-    try {
-      setLoading(true);
-      // Mock data - in production, fetch from API
-      // const response = await urbanAPI.getCityData(cityId);
-      // setCityData(response.data);
-    } catch (error) {
-      console.error('Error loading urban data:', error);
-    } finally {
-      setLoading(false);
-    }
+  // Filtered data for selected region and date range
+  const filterRows = (region) => Array.isArray(csvData)
+    ? csvData.filter(row => {
+        const regionMatch = (row.region || '').trim() === region;
+        const month = row.date?.slice(0, 7);
+        const start = dateRange.start;
+        const end = dateRange.end;
+        const monthMatch = (!start || month >= start) && (!end || month <= end);
+        return regionMatch && monthMatch;
+      })
+    : [];
+  const regionRows = filterRows(selectedRegion);
+  const compareRows = compareRegion ? filterRows(compareRegion) : [];
+
+  // Trends data: total emissions per year
+  const trendsData = (rows) => {
+    const byYear = {};
+    rows.forEach(row => {
+      const year = row.date?.slice(0, 4);
+      if (!year) return;
+      byYear[year] = (byYear[year] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    return Object.entries(byYear).map(([year, value]) => ({ year, total_emissions: value / 1000 })); // kg to t
   };
 
-  const loadAIRecommendations = async () => {
-    try {
-      const mockRecommendations = [
-        {
-          id: 1,
-          title: 'Implement Smart Grid Technology',
-          category: 'Energy',
-          priority: 'High',
-          description: 'Deploy smart grid infrastructure to optimize energy distribution and reduce waste by 20%.',
-          benefits: ['20% energy savings', 'Improved reliability', 'Better renewable integration'],
-          cost: '$1.2B',
-          timeline: '3-4 years',
-          co2Reduction: 150000, // tons per year
-        },
-        {
-          id: 2,
-          title: 'Expand Bike Lane Network',
-          category: 'Transportation',
-          priority: 'Medium',
-          description: 'Create 500km of protected bike lanes to encourage sustainable transportation.',
-          benefits: ['Reduced traffic', 'Improved air quality', 'Health benefits'],
-          cost: '$200M',
-          timeline: '2-3 years',
-          co2Reduction: 50000,
-        },
-        {
-          id: 3,
-          title: 'Vertical Forest Buildings',
-          category: 'Green Infrastructure',
-          priority: 'Medium',
-          description: 'Mandate green facades for new buildings to improve air quality and reduce urban heat.',
-          benefits: ['Better air quality', 'Temperature reduction', 'Biodiversity'],
-          cost: '$800M',
-          timeline: '5-7 years',
-          co2Reduction: 75000,
-        },
-        {
-          id: 4,
-          title: 'Circular Economy Hub',
-          category: 'Waste Management',
-          priority: 'High',
-          description: 'Establish industrial symbiosis networks where waste from one industry becomes input for another.',
-          benefits: ['90% waste reduction', 'Job creation', 'Economic growth'],
-          cost: '$600M',
-          timeline: '2-4 years',
-          co2Reduction: 100000,
-        },
-      ];
-      setAiRecommendations(mockRecommendations);
-    } catch (error) {
-      console.error('Error loading AI recommendations:', error);
-    }
+  // Breakdown data: emissions by category for latest year
+  const breakdownData = (rows) => {
+    if (rows.length === 0) return [];
+    const years = rows.map(r => r.date?.slice(0, 4)).filter(Boolean);
+    const latestYear = Math.max(...years.map(Number));
+    const yearRows = rows.filter(r => r.date?.slice(0, 4) === String(latestYear));
+    const byCategory = {};
+    yearRows.forEach(row => {
+      const cat = row.category || 'Other';
+      byCategory[cat] = (byCategory[cat] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    return Object.entries(byCategory).map(([category, value]) => ({ category, value: value / 1000, year: latestYear }));
   };
 
-  const handleDownloadPDF = () => {
-    if (reportRef.current) {
-      html2pdf().from(reportRef.current).set({
-        margin: 0.5,
-        filename: `${cityData.name.replace(/\s+/g, '_')}_Urban_Report.pdf`,
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      }).save();
+  // AI Insights
+  const aiInsights = (rows) => {
+    if (rows.length === 0) return null;
+    const years = rows.map(r => r.date?.slice(0, 4)).filter(Boolean);
+    const allYears = Array.from(new Set(years)).sort();
+    const latestYear = Math.max(...years.map(Number));
+    const yearRows = rows.filter(r => r.date?.slice(0, 4) === String(latestYear));
+    const byCategory = {};
+    yearRows.forEach(row => {
+      const cat = row.category || 'Other';
+      byCategory[cat] = (byCategory[cat] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    const sorted = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
+    // Trend
+    const trendData = trendsData(rows).sort((a, b) => a.year.localeCompare(b.year));
+    let trend = 'flat';
+    if (trendData.length > 1) {
+      const first = trendData[0].total_emissions;
+      const last = trendData[trendData.length - 1].total_emissions;
+      if (last > first * 1.05) trend = 'increasing';
+      else if (last < first * 0.95) trend = 'decreasing';
     }
-  };
-
-  // Remove the handleAirQualitySearch function
-
-  const getCategoryIcon = (category) => {
-    const icons = {
-      energy: Zap,
-      transportation: Car,
-      waste: Recycle,
-      greenSpace: TreePine,
-      airQuality: Wind,
-      waterManagement: Droplets,
-      'Green Infrastructure': TreePine,
-      'Transportation': Bus,
-      'Energy': Sun,
-      'Waste Management': Recycle,
+    // Anomaly detection: years with >50% above avg
+    const avg = trendData.reduce((a, b) => a + b.total_emissions, 0) / (trendData.length || 1);
+    const anomalies = trendData.filter(d => d.total_emissions > avg * 1.5).map(d => d.year);
+    // Recommendation
+    let recommendation = '';
+    if (trend === 'increasing') recommendation = 'Emissions are rising. Focus on top categories and recent years.';
+    else if (trend === 'decreasing') recommendation = 'Emissions are decreasing. Keep up the good work and target remaining high categories.';
+    else recommendation = 'Emissions are stable. Review top categories for further reduction.';
+    return {
+      latestYear,
+      topCategory: sorted[0]?.[0] || '',
+      topValue: sorted[0] ? (sorted[0][1] / 1000).toFixed(2) : '',
+      trend,
+      anomalies,
+      recommendation,
+      trendData
     };
-    return icons[category] || Building;
   };
 
-  const getCategoryColor = (category) => {
-    const colors = {
-      energy: '#f59e0b',
-      transportation: '#3b82f6',
-      waste: '#10b981',
-      greenSpace: '#22c55e',
-      airQuality: '#06b6d4',
-      waterManagement: '#0ea5e9',
-      'Green Infrastructure': '#22c55e',
-      'Transportation': '#3b82f6',
-      'Energy': '#f59e0b',
-      'Waste Management': '#10b981',
+  // Download CSV for selected region
+  const handleDownloadCSV = (rows, region) => {
+    if (!rows.length) return;
+    const csv = [headers.join(',')].concat(
+      rows.map(row => headers.map(h => row[h] || '').join(','))
+    ).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${region}_carbon_emissions.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Drilldown data for modal
+  const drilldownRows = regionRows.filter(
+    row => row.category === drilldown.category && row.date?.slice(0, 4) === String(drilldown.year)
+  );
+
+  // Months for date range selector
+  const allMonths = Array.from(new Set((csvData || []).map(row => row.date?.slice(0, 7)).filter(Boolean))).sort();
+
+  // Table data for filtered region and date range
+  const tableRows = regionRows;
+
+  // Chart colors
+  const regionColor = '#3b82f6';
+  const compareColor = '#f59e42';
+  const pieColors = ['#3b82f6', '#f59e42', '#10b981', '#f87171', '#6366f1', '#fbbf24', '#a21caf', '#0ea5e9', '#e11d48'];
+
+  // Export chart as image
+  const handleExportChart = async (ref, name) => {
+    if (!ref.current) return;
+    const canvas = await html2canvas(ref.current, { backgroundColor: null });
+    const link = document.createElement('a');
+    link.download = `${name}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
+  // Extra AI summary
+  const aiSummary = (() => {
+    const rows = regionRows;
+    if (!rows.length) return '';
+    const ai = aiInsights(rows);
+    if (!ai) return '';
+    return `From ${dateRange.start} to ${dateRange.end}, ${selectedRegion} emitted a total of ${trendsData(rows).reduce((a, b) => a + b.total_emissions, 0).toFixed(2)} tCO₂. The top emission category in ${ai.latestYear} was ${ai.topCategory} (${ai.topValue} tCO₂). The overall trend is ${ai.trend}. ${ai.recommendation}`;
+  })();
+
+  // Pie chart data: emissions by category for selected region and date range
+  const pieData = (() => {
+    if (regionRows.length === 0) return [];
+    const byCategory = {};
+    regionRows.forEach(row => {
+      const cat = row.category || 'Other';
+      byCategory[cat] = (byCategory[cat] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    return Object.entries(byCategory).map(([category, value]) => ({ name: category, value: value / 1000 }));
+  })();
+
+  // Area chart data: cumulative emissions over time
+  const areaData = (() => {
+    const sorted = trendsData(regionRows).sort((a, b) => a.year.localeCompare(b.year));
+    let cumulative = 0;
+    return sorted.map(d => {
+      cumulative += d.total_emissions;
+      return { ...d, cumulative };
+    });
+  })();
+
+  // Top 3 emission tips with icons and color
+  const emissionTips = (() => {
+    if (regionRows.length === 0) return [];
+    const byCategory = {};
+    regionRows.forEach(row => {
+      const cat = row.category || 'Other';
+      byCategory[cat] = (byCategory[cat] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    const sorted = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
+    const tips = {
+      'energy': { tip: 'Switch to renewable energy sources and improve energy efficiency at home and work.', icon: <Zap className="text-yellow-500 w-6 h-6" />, color: 'bg-yellow-50 border-yellow-300' },
+      'transportation': { tip: 'Use public transport, carpool, bike, or walk to reduce transportation emissions.', icon: <Car className="text-blue-500 w-6 h-6" />, color: 'bg-blue-50 border-blue-300' },
+      'waste': { tip: 'Reduce, reuse, and recycle. Compost organic waste and avoid single-use plastics.', icon: <Trash2 className="text-green-600 w-6 h-6" />, color: 'bg-green-50 border-green-300' },
+      'goods': { tip: 'Buy less, choose sustainable products, and support circular economy initiatives.', icon: <ShoppingBag className="text-purple-500 w-6 h-6" />, color: 'bg-purple-50 border-purple-300' },
+      'water': { tip: 'Conserve water and fix leaks to reduce water-related emissions.', icon: <Droplets className="text-cyan-500 w-6 h-6" />, color: 'bg-cyan-50 border-cyan-300' },
+      'food_waste': { tip: 'Plan meals, store food properly, and compost to minimize food waste.', icon: <Utensils className="text-orange-500 w-6 h-6" />, color: 'bg-orange-50 border-orange-300' },
+      'plastic': { tip: 'Avoid single-use plastics and support plastic recycling programs.', icon: <Globe className="text-pink-500 w-6 h-6" />, color: 'bg-pink-50 border-pink-300' },
+      'Other': { tip: 'Review your lifestyle for other emission sources and seek sustainable alternatives.', icon: <Leaf className="text-lime-600 w-6 h-6" />, color: 'bg-lime-50 border-lime-300' }
     };
-    return colors[category] || '#6b7280';
-  };
+    return sorted.slice(0, 3).map(([cat]) => ({ ...tips[cat] || tips['Other'], category: cat }));
+  })();
 
-  const getPriorityBadgeColor = (priority) => {
-    switch (priority) {
-      case 'High':
-        return 'destructive';
-      case 'Medium':
-        return 'secondary';
-      case 'Low':
-        return 'outline';
-      default:
-        return 'outline';
+  // Personalized AI suggestion
+  const aiSuggestion = (() => {
+    if (regionRows.length === 0) return '';
+    const ai = aiInsights(regionRows);
+    if (!ai) return '';
+    const friendly = [
+      `🌱 Great job! Your emissions are ${ai.trend === 'decreasing' ? 'going down' : ai.trend === 'increasing' ? 'rising' : 'stable'}. Focus on ${ai.topCategory} for the biggest impact!`,
+      `💡 Tip: Small changes in ${ai.topCategory} can make a big difference.`,
+      `🚀 Keep it up! Review your ${ai.topCategory} habits for more savings.`,
+      `🌍 Every step counts. ${ai.recommendation}`
+    ];
+    return friendly[Math.floor(Math.random() * friendly.length)];
+  })();
+
+  // Year-over-year change in emissions
+  const yearOverYearChange = (() => {
+    const trend = trendsData(regionRows).sort((a, b) => a.year.localeCompare(b.year));
+    if (trend.length < 2) return null;
+    const last = trend[trend.length - 1];
+    const prev = trend[trend.length - 2];
+    const change = ((last.total_emissions - prev.total_emissions) / prev.total_emissions) * 100;
+    return { year: last.year, prevYear: prev.year, change: change.toFixed(1) };
+  })();
+
+  // Streak: consecutive months of decreasing emissions
+  const streak = (() => {
+    const trend = trendsData(regionRows).sort((a, b) => a.year.localeCompare(b.year));
+    if (trend.length < 2) return 0;
+    let count = 0;
+    for (let i = trend.length - 1; i > 0; i--) {
+      if (trend[i].total_emissions < trend[i - 1].total_emissions) count++;
+      else break;
     }
-  };
+    return count;
+  })();
 
-  const getStatusBadgeColor = (status) => {
-    switch (status) {
-      case 'Active':
-      case 'In Progress':
-        return 'default';
-      case 'Planning':
-        return 'secondary';
-      case 'Completed':
-        return 'outline';
-      default:
-        return 'outline';
-    }
-  };
+  // Personal Best: month with lowest emissions
+  const personalBest = (() => {
+    if (regionRows.length === 0) return null;
+    const byMonth = {};
+    regionRows.forEach(row => {
+      const month = row.date?.slice(0, 7);
+      byMonth[month] = (byMonth[month] || 0) + (Number(row.emissions_kg) || 0);
+    });
+    const sorted = Object.entries(byMonth).sort((a, b) => a[1] - b[1]);
+    if (!sorted.length) return null;
+    return { month: sorted[0][0], value: (sorted[0][1] / 1000).toFixed(2) };
+  })();
 
-  const formatCurrency = (amount) => {
-    if (amount >= 1000000000) {
-      return `$${(amount / 1000000000).toFixed(1)}B`;
-    } else if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(0)}M`;
-    } else if (amount >= 1000) {
-      return `$${(amount / 1000).toFixed(0)}K`;
-    }
-    return `$${amount}`;
-  };
+  // Challenge of the Month (rotating)
+  const ecoChallenges = [
+    'Bike or walk for all trips under 3km this month.',
+    'Go meatless every Monday for a month.',
+    'Reduce your shower time by 2 minutes.',
+    'Host a recycling drive in your community.',
+    'Switch to LED lighting in your home.',
+    'Plant a tree or start a small garden.',
+    'Use public transport instead of driving for a week.',
+    'Compost your kitchen waste for a month.',
+    'Replace one meat meal per week with a vegetarian option.',
+    'Share your best eco-tip on social media.'
+  ];
+  const challengeOfMonth = ecoChallenges[new Date().getMonth() % ecoChallenges.length];
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Progress Badge (color based on trend)
+  const ai = aiInsights(regionRows);
+  const badgeColor = ai?.trend === 'decreasing' ? 'bg-green-500' : ai?.trend === 'increasing' ? 'bg-red-500' : 'bg-yellow-400';
+  const badgeText = ai?.trend === 'decreasing' ? 'On Track' : ai?.trend === 'increasing' ? 'Needs Attention' : 'Stable';
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Urban Planning & Sustainability
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              AI-powered insights for sustainable city development
-            </p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Dialog open={mapOpen} onOpenChange={setMapOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" onClick={() => setMapOpen(true)}>
-                  <Map className="h-4 w-4 mr-2" />
-                  View Map
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-3xl h-[500px]">
-                <DialogHeader>
-                  <DialogTitleUI>City Map</DialogTitleUI>
-                  <DialogDescription>Map centered on {cityData.name}.</DialogDescription>
-                </DialogHeader>
-                <div className="w-full h-[400px] rounded overflow-hidden">
-                  <MapContainer center={[cityLat, cityLng]} zoom={12} style={{ height: '100%', width: '100%' }} scrollWheelZoom={true}>
-                    <TileLayer
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={[cityLat, cityLng]}>
-                      <Popup>{cityData.name}</Popup>
-                    </Marker>
-                  </MapContainer>
-                </div>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Close</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-            <Dialog open={reportOpen} onOpenChange={setReportOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" onClick={() => setReportOpen(true)}>
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Generate Report
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto print:max-h-none print:overflow-visible">
-                <DialogHeader>
-                  <DialogTitleUI>Urban Sustainability Report</DialogTitleUI>
-                  <DialogDescription>Summary of city sustainability, challenges, projects, and AI recommendations.</DialogDescription>
-                </DialogHeader>
-                <div ref={reportRef} className="space-y-6 p-4 bg-white dark:bg-gray-900 rounded print:bg-white print:text-black">
-                  <h2 className="text-2xl font-bold mb-4 text-center">{cityData.name} Urban Sustainability Report</h2>
-                  <div className="text-base text-gray-700 dark:text-gray-200">
-                    <strong>Population:</strong> {cityData.population.toLocaleString()}<br />
-                    <strong>Area:</strong> {cityData.area} km²<br />
-                    <strong>Sustainability Score:</strong> {cityData.sustainability.score}/100 (Rank #{cityData.sustainability.rank})
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mt-4 mb-2">Sustainability Categories</h3>
-                    <ul className="list-disc ml-8">
-                      {Object.entries(cityData.sustainability.categories).map(([cat, val]) => (
-                        <li key={cat} className="mb-1">{cat.replace(/([A-Z])/g, ' $1').trim()}: {val}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mt-4 mb-2">Challenges</h3>
-                    <ul className="list-disc ml-8">
-                      {cityData.challenges.map(ch => (
-                        <li key={ch.id} className="mb-1"><strong>{ch.title}</strong>: {ch.description} (Priority: {ch.priority}, Impact: {ch.impact})</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mt-4 mb-2">Projects</h3>
-                    <ul className="list-disc ml-8">
-                      {cityData.projects.map(pr => (
-                        <li key={pr.id} className="mb-1"><strong>{pr.name}</strong> ({pr.type}): {pr.impact}, Status: {pr.status}, Completion: {pr.completion}%, Budget: {pr.budget}, Timeline: {pr.timeline}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mt-4 mb-2">AI Recommendations</h3>
-                    <ul className="list-disc ml-8">
-                      {aiRecommendations.map(rec => (
-                        <li key={rec.id} className="mb-1"><strong>{rec.title}</strong> ({rec.category}): {rec.description} (Priority: {rec.priority}, CO₂ Reduction: {rec.co2Reduction.toLocaleString()} tons/year)</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={handleDownloadPDF} variant="default">Download as PDF</Button>
-                  <DialogClose asChild>
-                    <Button variant="outline">Close</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-
-        {/* City Overview */}
-        <Card>
+      <div className="max-w-6xl mx-auto space-y-6">
+        <h1 className="text-3xl font-bold text-center mb-4">Carbon Emissions Dashboard</h1>
+        <p className="text-center text-gray-600 dark:text-gray-400 mb-6">
+          Visualize and analyze carbon emissions by region and date range
+        </p>
+        {/* Map Visualization */}
+        <Card className="shadow-lg rounded-xl">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900">
-                  <Building className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl">{cityData.name}</CardTitle>
-                  <CardDescription>
-                    Population: {cityData.population.toLocaleString()} • Area: {cityData.area} km²
-                  </CardDescription>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-green-600">
-                  {cityData.sustainability.score}/100
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Sustainability Score
-                </p>
-                <Badge variant="outline" className="mt-1">
-                  Rank #{cityData.sustainability.rank} globally
-                </Badge>
-              </div>
-            </div>
+            <CardTitle>Region Map</CardTitle>
+            <CardDescription>Click a marker to select a region</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-              {Object.entries(cityData.sustainability.categories).map(([category, score]) => {
-                const IconComponent = getCategoryIcon(category);
-                const color = getCategoryColor(category);
-                
-                return (
-                  <div key={category} className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                        <IconComponent className="h-4 w-4" style={{ color }} />
-                      </div>
-                    </div>
-                    <div className="text-lg font-semibold">{score}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400 capitalize">
-                      {category.replace(/([A-Z])/g, ' $1').trim()}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            {regionOptions.some(r => regionCoords[r]) ? (
+              <MapContainer
+                center={regionCoords[selectedRegion] || [20, 0]}
+                zoom={3}
+                style={{ height: 300, width: '100%' }}
+                scrollWheelZoom={true}
+                dragging={true}
+                doubleClickZoom={true}
+                zoomControl={true}
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                {regionOptions.filter(r => regionCoords[r]).map(region => (
+                  <Marker
+                    key={region}
+                    position={regionCoords[region]}
+                    eventHandlers={{
+                      click: () => setSelectedRegion(region)
+                    }}
+                  >
+                    <Popup>
+                      <b>{region}</b>
+                    </Popup>
+                    <LeafletTooltip>{region}</LeafletTooltip>
+                  </Marker>
+                ))}
+              </MapContainer>
+            ) : (
+              <div className="text-gray-500">No map location for these regions.</div>
+            )}
+            <div className="mt-2 text-xs text-gray-500">Blue marker = selected region</div>
           </CardContent>
         </Card>
-
-        {/* Main Content */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="challenges">Challenges</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Building className="h-5 w-5 text-green-600" />
-                    <span>Green Buildings</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.greenBuildings.toLocaleString()}
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    LEED certified buildings
-                  </p>
-                  <div className="mt-2">
-                    <Badge variant="default" className="text-xs">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      +15% this year
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Sun className="h-5 w-5 text-yellow-600" />
-                    <span>Renewable Energy</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.renewableEnergy}%
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Of total energy consumption
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-yellow-600 h-2 rounded-full"
-                      style={{ width: `${cityData.infrastructure.renewableEnergy}%` }}
-                    ></div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Bus className="h-5 w-5 text-blue-600" />
-                    <span>Public Transport</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.publicTransport}%
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Population coverage
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: `${cityData.infrastructure.publicTransport}%` }}
-                    ></div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Recycle className="h-5 w-5 text-green-600" />
-                    <span>Recycling Rate</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.recyclingRate}%
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Waste recycled annually
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-green-600 h-2 rounded-full"
-                      style={{ width: `${cityData.infrastructure.recyclingRate}%` }}
-                    ></div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <TreePine className="h-5 w-5 text-green-600" />
-                    <span>Green Spaces</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.greenSpaces}%
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Of total city area
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-green-600 h-2 rounded-full"
-                      style={{ width: `${cityData.infrastructure.greenSpaces}%` }}
-                    ></div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Car className="h-5 w-5 text-blue-600" />
-                    <span>Electric Vehicles</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
-                    {cityData.infrastructure.electricVehicles}%
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Of total vehicle fleet
-                  </p>
-                  <div className="mt-2">
-                    <Badge variant="secondary" className="text-xs">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      +8% this year
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Challenges Tab */}
-          <TabsContent value="challenges" className="space-y-6">
-            <Alert>
-              <Brain className="h-4 w-4" />
-              <AlertDescription>
-                AI-powered recommendations based on city data analysis, global best practices, and sustainability goals.
-              </AlertDescription>
-            </Alert>
-            
-            <div className="space-y-4">
-              {(Array.isArray(challenges) ? challenges : []).map((challenge) => (
-                <Card key={challenge.id}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{challenge.title}</CardTitle>
-                        <CardDescription className="mt-1">
-                          {challenge.description}
-                        </CardDescription>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant={getPriorityBadgeColor(challenge.priority)}>
-                          {challenge.priority} Priority
-                        </Badge>
-                        <Badge variant="outline">
-                          {challenge.impact} Impact
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-medium mb-2">Proposed Solutions:</h4>
-                        <ul className="space-y-1">
-                          {challenge.solutions.map((solution, index) => (
-                            <li key={index} className="flex items-center space-x-2 text-sm">
-                              <Lightbulb className="h-3 w-3 text-yellow-600" />
-                              <span>{solution}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Timeline:</span>
-                          <span className="font-medium">{challenge.timeline}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Estimated Cost:</span>
-                          <span className="font-medium">{challenge.cost}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+        <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+          <div className="flex flex-col items-center gap-2">
+            <Label htmlFor="region-select" className="font-medium">Select Region</Label>
+            {regionOptions.length === 0 ? (
+              <div className="text-red-600">No regions available.</div>
+            ) : (
+              <select
+                id="region-select"
+                className="p-2 rounded border"
+                value={selectedRegion}
+                onChange={e => setSelectedRegion(e.target.value)}
+                style={{ maxHeight: 200, overflowY: 'auto' }}
+              >
+                {regionOptions.map(region => (
+                  <option key={region} value={region}>{region}</option>
+                ))}
+              </select>
+            )}
+            <Button className="mt-2" onClick={() => handleDownloadCSV(regionRows, selectedRegion)} disabled={!regionRows.length}>
+              Download CSV for {selectedRegion}
+            </Button>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Label htmlFor="compare-select" className="font-medium">Compare With</Label>
+            <select
+              id="compare-select"
+              className="p-2 rounded border"
+              value={compareRegion}
+              onChange={e => setCompareRegion(e.target.value)}
+              style={{ maxHeight: 200, overflowY: 'auto' }}
+            >
+              <option value="">None</option>
+              {regionOptions.filter(r => r !== selectedRegion).map(region => (
+                <option key={region} value={region}>{region}</option>
               ))}
+            </select>
+            {compareRegion && (
+              <Button className="mt-2" onClick={() => handleDownloadCSV(compareRows, compareRegion)} disabled={!compareRows.length}>
+                Download CSV for {compareRegion}
+              </Button>
+            )}
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Label className="font-medium">Date Range (Year-Month)</Label>
+            <div className="flex gap-2">
+              <select
+                value={dateRange.start}
+                onChange={e => setDateRange(d => ({ ...d, start: e.target.value }))}
+                className="p-2 rounded border"
+              >
+                {allMonths.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
+              <span className="mx-1">to</span>
+              <select
+                value={dateRange.end}
+                onChange={e => setDateRange(d => ({ ...d, end: e.target.value }))}
+                className="p-2 rounded border"
+              >
+                {allMonths.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
             </div>
-          </TabsContent>
+          </div>
+        </div>
+        {loading ? (
+          <div className="text-center text-gray-600">Loading data...</div>
+        ) : error ? (
+          <div className="text-center text-red-600">{error}</div>
+        ) : regionRows.length === 0 ? (
+          <div className="text-center text-gray-600">No data for this region and date range.</div>
+        ) : (
+          <>
+            {/* AI Summary */}
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>AI Summary</CardTitle>
+                <CardDescription>Automated summary for {selectedRegion}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-base text-gray-700 dark:text-gray-200">{aiSummary}</div>
+              </CardContent>
+            </Card>
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>Emissions Trends</CardTitle>
+                <CardDescription>Total emissions per year (tCO₂)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div ref={trendsChartRef} style={{ position: 'relative' }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="total_emissions"
+                        stroke={regionColor}
+                        name={selectedRegion}
+                        data={trendsData(regionRows)}
+                      />
+                      {compareRegion && (
+                        <Line
+                          type="monotone"
+                          dataKey="total_emissions"
+                          stroke={compareColor}
+                          name={compareRegion}
+                          data={trendsData(compareRows)}
+                        />
+                      )}
+                    </LineChart>
+                  </ResponsiveContainer>
+                  <Button className="absolute top-2 right-2" size="sm" onClick={() => handleExportChart(trendsChartRef, `trends_${selectedRegion}`)}>
+                    Export as Image
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>Emissions Breakdown</CardTitle>
+                <CardDescription>By category for the latest year (click a bar for details)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div ref={breakdownChartRef} style={{ position: 'relative' }}>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                      data={breakdownData(regionRows)}
+                      onClick={e => {
+                        if (e && e.activeLabel) {
+                          setDrilldown({ open: true, category: e.activeLabel, year: breakdownData(regionRows)[0]?.year });
+                        }
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="category" />
+                      <YAxis label={{ value: 'tCO₂', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="value" fill={regionColor} name={selectedRegion} />
+                      {compareRegion && (
+                        <Bar dataKey="value" fill={compareColor} name={compareRegion} data={breakdownData(compareRows)} />
+                      )}
+                    </BarChart>
+                  </ResponsiveContainer>
+                  <Button className="absolute top-2 right-2" size="sm" onClick={() => handleExportChart(breakdownChartRef, `breakdown_${selectedRegion}`)}>
+                    Export as Image
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>AI Insights</CardTitle>
+                <CardDescription>Trends, anomalies, and recommendations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {(() => {
+                  const ai = aiInsights(regionRows);
+                  if (!ai) return <div>No insight available for this region and date range.</div>;
+                  return (
+                    <div>
+                      <div><strong>Trend:</strong> {ai.trend === 'increasing' ? '⬆️ Increasing' : ai.trend === 'decreasing' ? '⬇️ Decreasing' : 'Stable'}</div>
+                      <div><strong>Top Category ({ai.latestYear}):</strong> {ai.topCategory} ({ai.topValue} tCO₂)</div>
+                      {ai.anomalies.length > 0 && (
+                        <div className="text-orange-600 mt-2">Anomalies detected in years: {ai.anomalies.join(', ')}</div>
+                      )}
+                      <div className="mt-2 text-green-700">{ai.recommendation}</div>
+                    </div>
+                  );
+                })()}
+              </CardContent>
+            </Card>
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>Data Table</CardTitle>
+                <CardDescription>All data for {selectedRegion} ({dateRange.start}–{dateRange.end})</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto max-h-96">
+                  <table className="min-w-full text-xs border border-gray-200 dark:border-gray-700">
+                    <thead className="bg-gray-100 dark:bg-gray-800">
+                      <tr>
+                        {headers.map(col => <th key={col} className="px-2 py-1 border-b border-gray-200 dark:border-gray-700 text-left">{col}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableRows.map((row, i) => (
+                        <tr key={i} className="even:bg-gray-50 dark:even:bg-gray-900">
+                          {headers.map(col => <td key={col} className="px-2 py-1 border-b border-gray-100 dark:border-gray-800">{row[col]}</td>)}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+            {/* Drilldown Modal */}
+            <Dialog open={drilldown.open} onOpenChange={open => setDrilldown(d => ({ ...d, open }))}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Details for {drilldown.category} ({drilldown.year})</DialogTitle>
+                  <DialogDescription>All activities for this category and year in {selectedRegion}</DialogDescription>
+                </DialogHeader>
+                <div className="overflow-x-auto max-h-96">
+                  <table className="min-w-full text-xs border border-gray-200 dark:border-gray-700">
+                    <thead className="bg-gray-100 dark:bg-gray-800">
+                      <tr>
+                        {headers.map(col => <th key={col} className="px-2 py-1 border-b border-gray-200 dark:border-gray-700 text-left">{col}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {drilldownRows.map((row, i) => (
+                        <tr key={i} className="even:bg-gray-50 dark:even:bg-gray-900">
+                          {headers.map(col => <td key={col} className="px-2 py-1 border-b border-gray-100 dark:border-gray-800">{row[col]}</td>)}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </DialogContent>
+            </Dialog>
+            {/* Pie Chart: Emissions by Category */}
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>Emissions Breakdown (Pie)</CardTitle>
+                <CardDescription>Share of emissions by category for the selected region and date range</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      label
+                    >
+                      {pieData.map((entry, i) => (
+                        <Cell key={`cell-${i}`} fill={pieColors[i % pieColors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-          {/* Projects Tab */}
-          <TabsContent value="projects" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cityData.projects.map((project) => {
-                const IconComponent = getCategoryIcon(project.type);
-                const color = getCategoryColor(project.type);
-                
-                return (
-                  <Card key={project.id}>
-                    <CardHeader>
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                          <IconComponent className="h-4 w-4" style={{ color }} />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg">{project.name}</CardTitle>
-                          <CardDescription>{project.type}</CardDescription>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <Badge variant={getStatusBadgeColor(project.status)}>
-                          {project.status}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {project.completion}% Complete
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-blue-600 h-2 rounded-full"
-                            style={{ width: `${project.completion}%` }}
-                          ></div>
-                        </div>
-                        
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">Budget:</span>
-                            <span className="font-medium">{project.budget}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">Timeline:</span>
-                            <span className="font-medium">{project.timeline}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            <strong>Impact:</strong> {project.impact}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </TabsContent>
+            {/* Area Chart: Cumulative Emissions */}
+            <Card className="shadow-lg rounded-xl">
+              <CardHeader>
+                <CardTitle>Cumulative Emissions</CardTitle>
+                <CardDescription>Total emissions accumulated over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={250}>
+                  <AreaChart data={areaData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Area type="monotone" dataKey="cumulative" stroke="#6366f1" fill="#a5b4fc" name="Cumulative Emissions (tCO₂)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-          {/* AI Insights Tab */}
-          <TabsContent value="ai-insights" className="space-y-6">
-            <Alert>
-              <Brain className="h-4 w-4" />
-              <AlertDescription>
-                AI-powered recommendations based on city data analysis, global best practices, and sustainability goals.
-              </AlertDescription>
-            </Alert>
-            
-            <div className="space-y-4">
-              {aiRecommendations.map((rec) => {
-                const IconComponent = getCategoryIcon(rec.category);
-                const color = getCategoryColor(rec.category);
-                
-                return (
-                  <Card key={rec.id}>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                            <IconComponent className="h-4 w-4" style={{ color }} />
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">{rec.title}</CardTitle>
-                            <CardDescription>{rec.category}</CardDescription>
-                          </div>
-                        </div>
-                        <Badge variant={getPriorityBadgeColor(rec.priority)}>
-                          {rec.priority} Priority
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                        {rec.description}
-                      </p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-medium mb-2">Key Benefits:</h4>
-                          <ul className="space-y-1">
-                            {rec.benefits.map((benefit, index) => (
-                              <li key={index} className="flex items-center space-x-2 text-sm">
-                                <Target className="h-3 w-3 text-green-600" />
-                                <span>{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">Investment:</span>
-                            <span className="font-medium">{rec.cost}</span>
-                          </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">Timeline:</span>
-                            <span className="font-medium">{rec.timeline}</span>
-                          </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">CO₂ Reduction:</span>
-                            <span className="font-medium text-green-600">
-                              {rec.co2Reduction.toLocaleString()} tons/year
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center space-x-2">
-                          <Calculator className="h-4 w-4 text-blue-600" />
-                          <span className="text-sm font-medium">
-                            ROI: {((rec.co2Reduction * 50) / parseFloat(rec.cost.replace(/[$BM]/g, '')) * 100).toFixed(1)}%
-                          </span>
-                        </div>
-                        <Button size="sm">
-                          View Details
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+            {/* AI Tips & Suggestions Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Top 3 Emission Tips as cards */}
+              {emissionTips.map((tip, i) => (
+                <div key={i} className={`flex items-center gap-4 p-4 border rounded-xl shadow ${tip.color} transition-transform hover:scale-105`}>
+                  <div>{tip.icon}</div>
+                  <div>
+                    <div className="font-semibold text-lg capitalize">{tip.category.replace('_', ' ')}</div>
+                    <div className="text-sm text-gray-700 dark:text-gray-300">{tip.tip}</div>
+                  </div>
+                </div>
+              ))}
+              {/* Personalized AI Suggestion */}
+              <div className="flex flex-col justify-center items-center p-6 border rounded-xl shadow bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-900">
+                <Lightbulb className="w-8 h-8 text-yellow-400 mb-2 animate-pulse" />
+                <div className="font-bold text-lg mb-1">Personalized AI Suggestion</div>
+                <div className="text-base text-center text-gray-800 dark:text-gray-200">{aiSuggestion}</div>
+              </div>
             </div>
-          </TabsContent>
-        </Tabs>
+            {/* Gamified AI Features Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              {/* Progress Badge */}
+              <div className={`flex flex-col items-center justify-center p-4 rounded-xl shadow text-white ${badgeColor} transition-transform hover:scale-105`}>
+                <Award className="w-8 h-8 mb-2" />
+                <div className="font-bold text-lg">Progress Badge</div>
+                <div className="text-base">{badgeText}</div>
+              </div>
+              {/* Streak Card */}
+              <div className="flex flex-col items-center justify-center p-4 rounded-xl shadow bg-orange-50 border-orange-200 transition-transform hover:scale-105">
+                <Flame className="w-8 h-8 text-orange-500 mb-2 animate-bounce" />
+                <div className="font-bold text-lg">Streak</div>
+                <div className="text-base">{streak} month{streak === 1 ? '' : 's'} of decreasing emissions</div>
+              </div>
+              {/* Personal Best Card */}
+              <div className="flex flex-col items-center justify-center p-4 rounded-xl shadow bg-blue-50 border-blue-200 transition-transform hover:scale-105">
+                <Trophy className="w-8 h-8 text-blue-500 mb-2" />
+                <div className="font-bold text-lg">Personal Best</div>
+                <div className="text-base">{personalBest ? `${personalBest.month}: ${personalBest.value} tCO₂` : 'N/A'}</div>
+              </div>
+              {/* Challenge of the Month */}
+              <div className="flex flex-col items-center justify-center p-4 rounded-xl shadow bg-green-50 border-green-200 transition-transform hover:scale-105">
+                <Star className="w-8 h-8 text-green-500 mb-2 animate-spin" />
+                <div className="font-bold text-lg">Challenge of the Month</div>
+                <div className="text-base text-center">{challengeOfMonth}</div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

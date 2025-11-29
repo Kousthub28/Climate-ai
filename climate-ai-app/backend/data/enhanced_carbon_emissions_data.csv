@@ -1,0 +1,301 @@
+date,activity,amount,unit,emissions_kg,category,region,purpose,offset,emissions_per_unit,notes
+2025-04-17,tap_water,159.3,liters,0.05,water,USA,commute,Yes,0.0003,solar usage
+2025-04-01,plastic,448.4,kg,2690.4,waste,India,purchase,No,6.0,morning commute
+2025-07-25,bottled_water,369.3,liters,36.93,water,USA,leisure,Yes,0.1,solar usage
+2025-04-06,bus,313.03,km,31.3,transportation,Australia,home use,Yes,0.1,solar usage
+2025-05-23,flight,468.81,km,117.2,transportation,Australia,travel,No,0.25,new device
+2025-04-03,natural_gas,398.69,kg,916.99,energy,Australia,leisure,Yes,2.3,office recycling
+2025-06-10,electricity,198.01,kWh,79.2,energy,Brazil,work,Yes,0.4,summer cooling
+2025-02-23,electronics,233.23,kg,2332.3,goods,India,home use,Yes,10.0,new device
+2025-04-22,food_waste,66.92,kg,127.15,waste,USA,work,No,1.9,summer cooling
+2025-06-30,clothing,454.61,kg,1363.83,goods,Germany,commute,Yes,3.0,morning commute
+2025-06-08,tap_water,277.78,liters,0.08,water,Australia,work,Yes,0.0003,short haul flight
+2025-05-07,solar_power,255.72,kWh,2.56,energy,India,home use,Yes,0.01,morning commute
+2025-05-11,train,6.76,km,0.34,transportation,India,work,No,0.0503,solar usage
+2025-03-29,tap_water,41.76,liters,0.01,water,Australia,disposal,Yes,0.0002,office recycling
+2025-03-28,paper,127.82,kg,230.08,waste,Australia,work,Yes,1.8,summer cooling
+2025-07-25,plastic,275.28,kg,1651.68,waste,Brazil,commute,Yes,6.0,office recycling
+2025-06-30,electricity,99.03,kWh,39.61,energy,Brazil,commute,Yes,0.4,new device
+2025-07-13,solar_power,195.36,kWh,1.95,energy,Germany,travel,No,0.01,solar usage
+2025-05-29,tap_water,183.62,liters,0.06,water,Brazil,travel,No,0.0003,office recycling
+2025-03-31,clothing,384.0,kg,1152.0,goods,India,purchase,Yes,3.0,morning commute
+2025-06-08,natural_gas,316.16,kg,727.17,energy,Australia,home use,Yes,2.3,new device
+2025-03-03,food_waste,346.16,kg,657.7,waste,Australia,travel,Yes,1.9,summer cooling
+2025-05-11,clothing,249.44,kg,748.32,goods,USA,travel,No,3.0,morning commute
+2025-05-30,tap_water,24.99,liters,0.01,water,India,home use,No,0.0004,solar usage
+2025-07-22,paper,347.32,kg,625.18,waste,Australia,work,Yes,1.8,grocery run
+2025-07-16,tap_water,204.02,liters,0.06,water,Germany,work,No,0.0003,morning commute
+2025-02-24,tap_water,9.51,liters,0.0,water,Brazil,purchase,No,0.0,solar usage
+2025-02-06,paper,315.89,kg,568.6,waste,India,disposal,No,1.8,new device
+2025-03-03,food_waste,326.32,kg,620.01,waste,Germany,leisure,Yes,1.9,solar usage
+2025-07-05,train,498.61,km,24.93,transportation,Brazil,home use,No,0.05,office recycling
+2025-04-02,electronics,300.28,kg,3002.8,goods,India,disposal,No,10.0,short haul flight
+2025-03-30,food_waste,191.72,kg,364.27,waste,Australia,purchase,Yes,1.9,short haul flight
+2025-07-06,clothing,285.05,kg,855.15,goods,Australia,travel,No,3.0,solar usage
+2025-03-30,plastic,293.19,kg,1759.14,waste,Germany,disposal,Yes,6.0,solar usage
+2025-03-02,tap_water,64.77,liters,0.02,water,Brazil,travel,No,0.0003,new device
+2025-02-06,bus,74.6,km,7.46,transportation,Germany,leisure,Yes,0.1,grocery run
+2025-06-03,car,121.18,km,25.45,transportation,Brazil,home use,Yes,0.21,new device
+2025-05-11,bike,274.91,km,2.75,transportation,Australia,commute,Yes,0.01,morning commute
+2025-04-23,natural_gas,59.37,kg,136.55,energy,Australia,commute,No,2.3,office recycling
+2025-05-17,paper,484.75,kg,872.55,waste,Australia,disposal,Yes,1.8,short haul flight
+2025-05-31,flight,304.01,km,76.0,transportation,Brazil,commute,Yes,0.25,new device
+2025-02-08,electricity,203.13,kWh,81.25,energy,India,leisure,Yes,0.4,new device
+2025-03-26,train,388.24,km,19.41,transportation,USA,travel,Yes,0.05,grocery run
+2025-04-03,electronics,236.5,kg,2365.0,goods,USA,home use,Yes,10.0,summer cooling
+2025-05-09,heating_oil,468.68,kg,1256.06,energy,USA,work,No,2.68,grocery run
+2025-03-27,train,173.7,km,8.69,transportation,USA,work,Yes,0.05,new device
+2025-04-18,solar_power,359.69,kWh,3.6,energy,Germany,travel,No,0.01,short haul flight
+2025-05-11,clothing,387.12,kg,1161.36,goods,Germany,purchase,Yes,3.0,short haul flight
+2025-04-27,plastic,253.23,kg,1519.38,waste,Germany,purchase,No,6.0,solar usage
+2025-06-18,paper,317.69,kg,571.84,waste,Australia,work,Yes,1.8,summer cooling
+2025-06-15,tap_water,174.47,liters,0.05,water,Germany,work,Yes,0.0003,grocery run
+2025-05-09,flight,134.33,km,33.58,transportation,Germany,home use,No,0.25,new device
+2025-06-19,electricity,435.24,kWh,174.1,energy,Australia,leisure,No,0.4,grocery run
+2025-04-09,plastic,255.58,kg,1533.48,waste,USA,disposal,Yes,6.0,summer cooling
+2025-04-11,food_waste,387.08,kg,735.45,waste,Brazil,leisure,No,1.9,grocery run
+2025-04-17,heating_oil,316.57,kg,848.41,energy,Australia,travel,Yes,2.68,new device
+2025-03-27,clothing,76.08,kg,228.24,goods,Germany,commute,No,3.0,solar usage
+2025-05-19,electronics,361.19,kg,3611.9,goods,USA,commute,No,10.0,office recycling
+2025-06-30,electronics,361.78,kg,3617.8,goods,Germany,travel,Yes,10.0,morning commute
+2025-06-16,bottled_water,375.56,liters,37.56,water,Australia,travel,No,0.1,solar usage
+2025-06-05,train,492.85,km,24.64,transportation,Brazil,work,No,0.05,grocery run
+2025-06-17,solar_power,255.31,kWh,2.55,energy,Germany,commute,Yes,0.01,summer cooling
+2025-02-07,plastic,386.19,kg,2317.14,waste,India,home use,Yes,6.0,office recycling
+2025-02-25,food_waste,292.01,kg,554.82,waste,India,work,No,1.9,short haul flight
+2025-02-20,solar_power,388.67,kWh,3.89,energy,USA,commute,Yes,0.01,summer cooling
+2025-02-10,bottled_water,454.62,liters,45.46,water,India,purchase,Yes,0.1,office recycling
+2025-02-27,electronics,392.04,kg,3920.4,goods,Brazil,work,No,10.0,grocery run
+2025-03-06,car,145.23,km,30.5,transportation,Brazil,home use,Yes,0.21,solar usage
+2025-04-11,electricity,482.43,kWh,192.97,energy,Brazil,work,Yes,0.4,summer cooling
+2025-06-15,flight,491.17,km,122.79,transportation,Germany,work,No,0.25,office recycling
+2025-07-17,tap_water,248.54,liters,0.07,water,Brazil,home use,No,0.0003,solar usage
+2025-06-15,car,210.57,km,44.22,transportation,India,commute,No,0.21,solar usage
+2025-02-25,flight,234.66,km,58.66,transportation,India,leisure,Yes,0.25,grocery run
+2025-03-30,natural_gas,146.66,kg,337.32,energy,India,travel,No,2.3,solar usage
+2025-03-16,car,70.44,km,14.79,transportation,USA,purchase,No,0.21,solar usage
+2025-06-03,solar_power,263.82,kWh,2.64,energy,India,leisure,No,0.01,morning commute
+2025-05-02,food_waste,315.94,kg,600.29,waste,USA,home use,Yes,1.9,office recycling
+2025-05-29,flight,447.78,km,111.94,transportation,India,purchase,Yes,0.25,new device
+2025-07-03,car,288.04,km,60.49,transportation,India,commute,Yes,0.21,new device
+2025-06-30,solar_power,242.07,kWh,2.42,energy,Australia,work,Yes,0.01,short haul flight
+2025-02-10,heating_oil,33.07,kg,88.63,energy,India,disposal,Yes,2.6801,new device
+2025-02-13,clothing,373.51,kg,1120.53,goods,India,purchase,Yes,3.0,office recycling
+2025-06-25,bottled_water,297.83,liters,29.78,water,India,commute,No,0.1,office recycling
+2025-03-05,plastic,424.59,kg,2547.54,waste,USA,leisure,No,6.0,new device
+2025-06-07,car,459.08,km,96.41,transportation,USA,leisure,Yes,0.21,new device
+2025-03-03,clothing,276.15,kg,828.45,goods,Germany,leisure,No,3.0,new device
+2025-02-17,train,444.19,km,22.21,transportation,Brazil,commute,No,0.05,office recycling
+2025-03-20,bottled_water,158.27,liters,15.83,water,Australia,purchase,Yes,0.1,summer cooling
+2025-07-16,clothing,139.53,kg,418.59,goods,Brazil,purchase,No,3.0,short haul flight
+2025-02-27,clothing,107.41,kg,322.23,goods,USA,work,No,3.0,morning commute
+2025-02-24,natural_gas,254.32,kg,584.94,energy,India,leisure,Yes,2.3,grocery run
+2025-03-11,paper,49.88,kg,89.78,waste,Germany,disposal,No,1.7999,new device
+2025-03-28,paper,99.16,kg,178.49,waste,Germany,disposal,Yes,1.8,office recycling
+2025-03-18,food_waste,59.02,kg,112.14,waste,USA,home use,No,1.9,summer cooling
+2025-03-26,heating_oil,497.12,kg,1332.28,energy,USA,commute,No,2.68,summer cooling
+2025-03-01,natural_gas,134.97,kg,310.43,energy,Australia,travel,Yes,2.3,solar usage
+2025-04-27,train,166.3,km,8.32,transportation,Germany,commute,Yes,0.05,short haul flight
+2025-03-06,train,272.62,km,13.63,transportation,India,travel,Yes,0.05,new device
+2025-02-08,bottled_water,480.9,liters,48.09,water,USA,commute,Yes,0.1,solar usage
+2025-05-24,car,248.13,km,52.11,transportation,USA,travel,No,0.21,office recycling
+2025-06-04,electronics,151.09,kg,1510.9,goods,Brazil,disposal,Yes,10.0,short haul flight
+2025-04-03,car,144.12,km,30.27,transportation,Australia,home use,No,0.21,summer cooling
+2025-06-01,electricity,180.66,kWh,72.26,energy,Germany,work,No,0.4,office recycling
+2025-01-27,bottled_water,397.61,liters,39.76,water,Brazil,commute,No,0.1,summer cooling
+2025-03-07,natural_gas,413.53,kg,951.12,energy,Brazil,travel,Yes,2.3,office recycling
+2025-03-15,clothing,318.33,kg,954.99,goods,Germany,leisure,No,3.0,summer cooling
+2025-01-26,clothing,218.3,kg,654.9,goods,Australia,disposal,No,3.0,grocery run
+2025-03-02,tap_water,431.33,liters,0.13,water,Australia,home use,No,0.0003,solar usage
+2025-05-03,food_waste,443.66,kg,842.95,waste,USA,travel,No,1.9,short haul flight
+2025-02-04,bottled_water,341.5,liters,34.15,water,Australia,disposal,Yes,0.1,morning commute
+2025-05-08,bus,463.63,km,46.36,transportation,Germany,disposal,Yes,0.1,morning commute
+2025-03-16,paper,338.35,kg,609.03,waste,USA,home use,No,1.8,office recycling
+2025-06-18,tap_water,83.67,liters,0.03,water,Australia,travel,Yes,0.0004,summer cooling
+2025-06-24,food_waste,472.93,kg,898.57,waste,India,home use,Yes,1.9,morning commute
+2025-03-07,solar_power,426.83,kWh,4.27,energy,Brazil,commute,No,0.01,short haul flight
+2025-04-17,paper,97.74,kg,175.93,waste,Australia,travel,Yes,1.8,summer cooling
+2025-07-23,flight,238.57,km,59.64,transportation,USA,purchase,No,0.25,office recycling
+2025-05-11,paper,170.65,kg,307.17,waste,India,commute,No,1.8,summer cooling
+2025-05-03,clothing,296.75,kg,890.25,goods,Brazil,purchase,Yes,3.0,office recycling
+2025-03-05,tap_water,123.74,liters,0.04,water,Germany,disposal,No,0.0003,solar usage
+2025-06-24,car,49.6,km,10.42,transportation,Australia,purchase,No,0.2101,summer cooling
+2025-02-13,electronics,154.01,kg,1540.1,goods,Australia,leisure,No,10.0,grocery run
+2025-06-21,flight,97.12,km,24.28,transportation,India,leisure,Yes,0.25,solar usage
+2025-03-31,plastic,105.36,kg,632.16,waste,Brazil,home use,Yes,6.0,solar usage
+2025-07-13,car,45.26,km,9.5,transportation,Australia,home use,Yes,0.2099,office recycling
+2025-02-11,paper,133.13,kg,239.63,waste,Brazil,purchase,No,1.8,morning commute
+2025-03-20,clothing,52.83,kg,158.49,goods,India,leisure,Yes,3.0,grocery run
+2025-07-11,electronics,328.95,kg,3289.5,goods,Germany,commute,No,10.0,short haul flight
+2025-03-28,electronics,390.65,kg,3906.5,goods,Australia,disposal,No,10.0,office recycling
+2025-06-02,food_waste,193.87,kg,368.35,waste,Germany,purchase,No,1.9,solar usage
+2025-03-14,paper,103.49,kg,186.28,waste,Australia,commute,Yes,1.8,new device
+2025-03-12,clothing,34.17,kg,102.51,goods,India,purchase,No,3.0,solar usage
+2025-02-04,electronics,82.41,kg,824.1,goods,Germany,purchase,No,10.0,grocery run
+2025-02-02,electronics,486.32,kg,4863.2,goods,India,home use,No,10.0,new device
+2025-06-19,clothing,326.0,kg,978.0,goods,Germany,travel,No,3.0,short haul flight
+2025-04-01,car,275.79,km,57.92,transportation,Brazil,work,No,0.21,summer cooling
+2025-06-23,clothing,260.01,kg,780.03,goods,Brazil,commute,No,3.0,grocery run
+2025-05-06,clothing,314.88,kg,944.64,goods,Germany,purchase,No,3.0,summer cooling
+2025-04-27,flight,455.58,km,113.89,transportation,Australia,purchase,No,0.25,short haul flight
+2025-03-19,plastic,152.82,kg,916.92,waste,USA,work,No,6.0,short haul flight
+2025-07-21,flight,38.3,km,9.57,transportation,Brazil,purchase,Yes,0.2499,morning commute
+2025-02-04,clothing,105.13,kg,315.39,goods,USA,disposal,No,3.0,morning commute
+2025-03-26,tap_water,55.6,liters,0.02,water,USA,home use,No,0.0004,office recycling
+2025-03-06,paper,10.38,kg,18.68,waste,India,home use,No,1.7996,grocery run
+2025-07-25,tap_water,288.29,liters,0.09,water,USA,work,No,0.0003,solar usage
+2025-07-15,electronics,125.47,kg,1254.7,goods,India,purchase,No,10.0,solar usage
+2025-03-12,heating_oil,261.93,kg,701.97,energy,Australia,travel,Yes,2.68,grocery run
+2025-05-25,clothing,129.89,kg,389.67,goods,Germany,disposal,No,3.0,summer cooling
+2025-05-22,flight,61.73,km,15.43,transportation,India,work,Yes,0.25,solar usage
+2025-07-11,clothing,13.85,kg,41.55,goods,India,purchase,No,3.0,office recycling
+2025-05-09,bus,441.5,km,44.15,transportation,Germany,home use,Yes,0.1,office recycling
+2025-03-20,paper,254.66,kg,458.39,waste,India,home use,No,1.8,solar usage
+2025-05-29,tap_water,290.92,liters,0.09,water,Australia,leisure,No,0.0003,summer cooling
+2025-05-25,bike,179.45,km,1.79,transportation,India,commute,No,0.01,grocery run
+2025-03-16,clothing,427.48,kg,1282.44,goods,USA,home use,No,3.0,new device
+2025-06-01,solar_power,73.34,kWh,0.73,energy,Germany,purchase,Yes,0.01,office recycling
+2025-05-25,flight,489.26,km,122.31,transportation,Australia,home use,No,0.25,summer cooling
+2025-02-24,plastic,475.77,kg,2854.62,waste,USA,work,Yes,6.0,grocery run
+2025-07-02,food_waste,298.19,kg,566.56,waste,Australia,leisure,Yes,1.9,summer cooling
+2025-04-01,car,298.98,km,62.79,transportation,Australia,leisure,Yes,0.21,solar usage
+2025-03-23,electronics,493.27,kg,4932.7,goods,Australia,home use,No,10.0,morning commute
+2025-07-21,natural_gas,179.74,kg,413.4,energy,USA,purchase,No,2.3,short haul flight
+2025-07-20,bus,321.44,km,32.14,transportation,Brazil,purchase,No,0.1,summer cooling
+2025-02-19,paper,64.72,kg,116.5,waste,Germany,purchase,No,1.8001,summer cooling
+2025-04-22,electronics,389.57,kg,3895.7,goods,Brazil,travel,No,10.0,new device
+2025-02-08,bottled_water,131.17,liters,13.12,water,USA,leisure,No,0.1,short haul flight
+2025-02-26,bottled_water,455.3,liters,45.53,water,Australia,disposal,No,0.1,morning commute
+2025-03-30,heating_oil,338.84,kg,908.09,energy,Brazil,work,Yes,2.68,short haul flight
+2025-06-27,food_waste,499.96,kg,949.92,waste,Australia,travel,Yes,1.9,short haul flight
+2025-07-22,tap_water,274.4,liters,0.08,water,Australia,home use,Yes,0.0003,new device
+2025-03-06,flight,455.6,km,113.9,transportation,India,commute,No,0.25,short haul flight
+2025-05-08,tap_water,297.71,liters,0.09,water,India,commute,No,0.0003,short haul flight
+2025-02-27,solar_power,443.26,kWh,4.43,energy,Germany,leisure,No,0.01,office recycling
+2025-02-05,tap_water,467.29,liters,0.14,water,Australia,work,No,0.0003,new device
+2025-03-29,plastic,123.81,kg,742.86,waste,Brazil,disposal,No,6.0,new device
+2025-06-07,tap_water,481.08,liters,0.14,water,Australia,home use,Yes,0.0003,solar usage
+2025-02-27,clothing,24.93,kg,74.79,goods,Germany,leisure,Yes,3.0,solar usage
+2025-04-05,bus,90.75,km,9.08,transportation,USA,purchase,No,0.1001,solar usage
+2025-06-18,flight,297.71,km,74.43,transportation,USA,home use,Yes,0.25,grocery run
+2025-02-15,bottled_water,450.21,liters,45.02,water,USA,commute,No,0.1,grocery run
+2025-02-02,bottled_water,38.68,liters,3.87,water,Brazil,purchase,Yes,0.1001,morning commute
+2025-04-27,flight,144.26,km,36.06,transportation,USA,purchase,Yes,0.25,solar usage
+2025-02-05,flight,174.46,km,43.62,transportation,India,travel,Yes,0.25,short haul flight
+2025-03-08,bottled_water,413.31,liters,41.33,water,India,work,No,0.1,morning commute
+2025-06-04,bottled_water,452.74,liters,45.27,water,India,commute,No,0.1,morning commute
+2025-03-07,heating_oil,55.18,kg,147.88,energy,India,home use,No,2.68,new device
+2025-03-08,plastic,444.28,kg,2665.68,waste,Brazil,disposal,Yes,6.0,short haul flight
+2025-03-25,natural_gas,157.24,kg,361.65,energy,USA,travel,No,2.3,summer cooling
+2025-05-15,car,354.22,km,74.39,transportation,Brazil,travel,Yes,0.21,office recycling
+2025-06-23,food_waste,122.31,kg,232.39,waste,Brazil,purchase,Yes,1.9,solar usage
+2025-05-13,heating_oil,395.92,kg,1061.07,energy,Australia,work,Yes,2.68,short haul flight
+2025-03-20,train,168.61,km,8.43,transportation,USA,commute,No,0.05,solar usage
+2025-04-11,bottled_water,477.6,liters,47.76,water,India,purchase,Yes,0.1,summer cooling
+2025-02-04,food_waste,390.92,kg,742.75,waste,Australia,home use,Yes,1.9,solar usage
+2025-04-25,tap_water,35.34,liters,0.01,water,Germany,leisure,No,0.0003,solar usage
+2025-02-18,electronics,212.98,kg,2129.8,goods,USA,disposal,Yes,10.0,summer cooling
+2025-07-18,bottled_water,461.74,liters,46.17,water,Australia,disposal,Yes,0.1,office recycling
+2025-06-04,solar_power,391.36,kWh,3.91,energy,Brazil,work,No,0.01,short haul flight
+2025-03-19,clothing,149.94,kg,449.82,goods,India,leisure,No,3.0,summer cooling
+2025-02-16,flight,385.01,km,96.25,transportation,Germany,home use,Yes,0.25,morning commute
+2025-05-30,car,115.13,km,24.18,transportation,Germany,purchase,No,0.21,grocery run
+2025-04-24,paper,272.84,kg,491.11,waste,USA,travel,No,1.8,new device
+2025-05-07,plastic,189.05,kg,1134.3,waste,USA,disposal,Yes,6.0,solar usage
+2025-02-06,bottled_water,16.47,liters,1.65,water,Australia,purchase,No,0.1002,grocery run
+2025-05-17,heating_oil,330.3,kg,885.2,energy,Brazil,purchase,Yes,2.68,solar usage
+2025-03-19,bottled_water,62.45,liters,6.25,water,Australia,travel,No,0.1001,grocery run
+2025-06-21,tap_water,333.76,liters,0.1,water,India,disposal,No,0.0003,summer cooling
+2025-02-20,heating_oil,380.23,kg,1019.02,energy,Brazil,travel,Yes,2.68,solar usage
+2025-06-17,bottled_water,313.02,liters,31.3,water,India,commute,No,0.1,solar usage
+2025-06-10,bike,145.27,km,1.45,transportation,India,purchase,No,0.01,summer cooling
+2025-05-14,tap_water,418.72,liters,0.13,water,India,disposal,Yes,0.0003,morning commute
+2025-06-06,bus,421.4,km,42.14,transportation,India,disposal,Yes,0.1,new device
+2025-07-14,solar_power,233.24,kWh,2.33,energy,Germany,disposal,Yes,0.01,short haul flight
+2025-03-13,paper,124.74,kg,224.53,waste,Germany,home use,Yes,1.8,new device
+2025-07-17,plastic,53.29,kg,319.74,waste,USA,home use,Yes,6.0,short haul flight
+2025-07-05,train,28.32,km,1.42,transportation,Australia,purchase,No,0.0501,morning commute
+2025-06-27,tap_water,350.49,liters,0.11,water,Germany,work,No,0.0003,short haul flight
+2025-03-10,heating_oil,435.0,kg,1165.8,energy,Brazil,purchase,Yes,2.68,summer cooling
+2025-03-05,electronics,438.84,kg,4388.4,goods,India,commute,No,10.0,new device
+2025-06-02,natural_gas,266.42,kg,612.77,energy,India,home use,No,2.3,solar usage
+2025-03-17,paper,229.01,kg,412.22,waste,USA,disposal,Yes,1.8,office recycling
+2025-06-28,tap_water,493.8,liters,0.15,water,Germany,purchase,Yes,0.0003,grocery run
+2025-05-13,tap_water,235.84,liters,0.07,water,India,commute,No,0.0003,grocery run
+2025-03-16,natural_gas,262.79,kg,604.42,energy,Australia,purchase,No,2.3,morning commute
+2025-07-16,bottled_water,271.47,liters,27.15,water,Australia,purchase,Yes,0.1,solar usage
+2025-03-21,bottled_water,114.88,liters,11.49,water,Germany,commute,No,0.1,summer cooling
+2025-05-15,natural_gas,63.86,kg,146.88,energy,Germany,commute,Yes,2.3,grocery run
+2025-03-25,train,415.44,km,20.77,transportation,Brazil,commute,Yes,0.05,morning commute
+2025-03-29,bottled_water,320.91,liters,32.09,water,USA,leisure,No,0.1,short haul flight
+2025-07-01,bottled_water,432.81,liters,43.28,water,Germany,disposal,Yes,0.1,summer cooling
+2025-02-25,tap_water,216.04,liters,0.06,water,Brazil,disposal,Yes,0.0003,short haul flight
+2025-05-14,bottled_water,417.9,liters,41.79,water,Germany,home use,Yes,0.1,new device
+2025-03-04,flight,151.54,km,37.88,transportation,Australia,commute,No,0.25,grocery run
+2025-03-08,train,172.21,km,8.61,transportation,Brazil,travel,Yes,0.05,morning commute
+2025-03-23,paper,388.2,kg,698.76,waste,USA,disposal,Yes,1.8,grocery run
+2025-06-30,bottled_water,336.94,liters,33.69,water,India,disposal,No,0.1,grocery run
+2025-07-08,electronics,494.69,kg,4946.9,goods,Brazil,home use,No,10.0,short haul flight
+2025-02-13,paper,446.61,kg,803.9,waste,USA,disposal,No,1.8,morning commute
+2025-06-02,heating_oil,402.98,kg,1079.99,energy,Brazil,commute,No,2.68,new device
+2025-01-27,bottled_water,185.48,liters,18.55,water,Australia,home use,No,0.1,solar usage
+2025-03-23,tap_water,135.24,liters,0.04,water,Germany,travel,No,0.0003,summer cooling
+2025-07-10,heating_oil,222.4,kg,596.03,energy,Australia,travel,Yes,2.68,new device
+2025-07-22,bottled_water,276.08,liters,27.61,water,India,disposal,No,0.1,new device
+2025-02-12,bike,45.23,km,0.45,transportation,India,commute,Yes,0.0099,summer cooling
+2025-06-23,bottled_water,441.97,liters,44.2,water,USA,leisure,Yes,0.1,office recycling
+2025-01-26,food_waste,253.54,kg,481.73,waste,Germany,leisure,No,1.9,grocery run
+2025-06-07,natural_gas,428.48,kg,985.5,energy,Brazil,work,Yes,2.3,summer cooling
+2025-04-05,clothing,386.7,kg,1160.1,goods,USA,purchase,No,3.0,morning commute
+2025-07-05,electronics,452.65,kg,4526.5,goods,Germany,leisure,No,10.0,grocery run
+2025-02-28,paper,322.35,kg,580.23,waste,USA,disposal,No,1.8,short haul flight
+2025-06-29,electronics,302.56,kg,3025.6,goods,Australia,home use,Yes,10.0,morning commute
+2025-02-10,clothing,102.11,kg,306.33,goods,Germany,work,No,3.0,solar usage
+2025-03-20,paper,171.58,kg,308.84,waste,Germany,travel,No,1.8,grocery run
+2025-02-01,heating_oil,273.84,kg,733.89,energy,Australia,travel,No,2.68,office recycling
+2025-04-11,car,362.87,km,76.2,transportation,India,work,No,0.21,solar usage
+2025-01-29,food_waste,332.49,kg,631.73,waste,Australia,leisure,No,1.9,morning commute
+2025-05-12,tap_water,442.16,liters,0.13,water,Australia,work,Yes,0.0003,new device
+2025-04-04,heating_oil,251.39,kg,673.73,energy,India,disposal,No,2.68,grocery run
+2025-03-16,tap_water,466.74,liters,0.14,water,India,home use,No,0.0003,summer cooling
+2025-04-18,plastic,251.61,kg,1509.66,waste,Australia,disposal,No,6.0,short haul flight
+2025-04-30,bottled_water,6.23,liters,0.62,water,Germany,commute,Yes,0.0995,morning commute
+2025-03-06,electricity,486.49,kWh,194.6,energy,Germany,purchase,No,0.4,summer cooling
+2025-04-18,tap_water,21.08,liters,0.01,water,Australia,travel,No,0.0005,solar usage
+2025-06-09,bike,460.33,km,4.6,transportation,Australia,disposal,Yes,0.01,solar usage
+2025-03-18,tap_water,273.19,liters,0.08,water,USA,disposal,No,0.0003,grocery run
+2025-06-15,paper,195.13,kg,351.23,waste,India,work,Yes,1.8,grocery run
+2025-03-08,bus,466.28,km,46.63,transportation,Brazil,home use,No,0.1,grocery run
+2025-07-03,bottled_water,260.05,liters,26.01,water,Brazil,home use,Yes,0.1,grocery run
+2025-06-14,electronics,82.25,kg,822.5,goods,Brazil,work,Yes,10.0,grocery run
+2025-05-16,plastic,293.09,kg,1758.54,waste,Australia,purchase,Yes,6.0,short haul flight
+2025-04-29,tap_water,170.7,liters,0.05,water,Brazil,purchase,Yes,0.0003,grocery run
+2025-04-30,plastic,216.3,kg,1297.8,waste,Germany,disposal,Yes,6.0,short haul flight
+2025-03-29,clothing,217.48,kg,652.44,goods,Germany,purchase,Yes,3.0,new device
+2025-07-04,food_waste,115.21,kg,218.9,waste,Germany,home use,No,1.9,grocery run
+2025-02-14,natural_gas,127.97,kg,294.33,energy,Brazil,work,No,2.3,new device
+2025-07-19,flight,210.96,km,52.74,transportation,USA,travel,No,0.25,short haul flight
+2025-06-18,tap_water,403.47,liters,0.12,water,Brazil,home use,No,0.0003,morning commute
+2025-03-12,electronics,269.94,kg,2699.4,goods,Brazil,work,No,10.0,solar usage
+2025-06-03,clothing,84.84,kg,254.52,goods,India,home use,Yes,3.0,morning commute
+2025-03-05,bus,351.31,km,35.13,transportation,Germany,home use,No,0.1,grocery run
+2025-02-04,electronics,30.42,kg,304.2,goods,Germany,disposal,No,10.0,morning commute
+2025-05-01,bottled_water,72.02,liters,7.2,water,Australia,travel,No,0.1,summer cooling
+2025-06-01,bottled_water,341.11,liters,34.11,water,Brazil,purchase,No,0.1,office recycling
+2025-07-11,bottled_water,359.46,liters,35.95,water,USA,disposal,No,0.1,office recycling
+2025-02-18,bike,360.64,km,3.61,transportation,Germany,leisure,No,0.01,short haul flight
+2025-02-11,heating_oil,477.0,kg,1278.36,energy,India,disposal,Yes,2.68,short haul flight
+2025-03-17,plastic,273.69,kg,1642.14,waste,India,commute,No,6.0,summer cooling
+2025-04-24,natural_gas,183.33,kg,421.66,energy,Brazil,work,Yes,2.3,grocery run
+2025-06-18,clothing,362.82,kg,1088.46,goods,Brazil,purchase,Yes,3.0,grocery run
+2025-07-07,bottled_water,256.26,liters,25.63,water,Australia,work,No,0.1,new device
+2025-05-26,natural_gas,479.06,kg,1101.84,energy,Germany,work,No,2.3,office recycling
+2025-03-20,tap_water,39.79,liters,0.01,water,Australia,commute,No,0.0003,new device
+2025-06-06,clothing,83.44,kg,250.32,goods,Australia,disposal,Yes,3.0,new device
+2025-06-06,plastic,80.26,kg,481.56,waste,USA,travel,No,6.0,grocery run
+2025-07-02,electronics,239.11,kg,2391.1,goods,India,work,No,10.0,new device
+2025-04-26,tap_water,403.88,liters,0.12,water,India,travel,No,0.0003,summer cooling
+2025-03-05,electricity,120.18,kWh,48.07,energy,India,home use,No,0.4,new device
+2025-06-30,clothing,258.91,kg,776.73,goods,Australia,leisure,Yes,3.0,grocery run
+2025-06-15,electronics,76.69,kg,766.9,goods,Australia,purchase,No,10.0,new device
+2025-06-23,solar_power,267.0,kWh,2.67,energy,Australia,home use,No,0.01,morning commute

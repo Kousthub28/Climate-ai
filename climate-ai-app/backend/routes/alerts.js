@@ -5,6 +5,7 @@ const path = require('path');
 const ALERTS_FILE = path.join(__dirname, '../alerts.json'); // points to backend/alerts.json
 const fetch = require('node-fetch'); // At the top of the file
 const { sendTelegramAlert } = require('../services/telegramService');
+const alertSoundService = require('../services/alertSoundService');
 
 router.get('/', (req, res) => {
   if (fs.existsSync(ALERTS_FILE)) {
@@ -70,6 +71,80 @@ router.post('/weather-alert', async (req, res) => {
   }
 
   res.json({ success: true });
+});
+
+// Check weather alerts with sound notifications
+router.post('/check-weather-alerts', async (req, res) => {
+  try {
+    const { lat, lng, name } = req.body;
+    const location = { 
+      name: name || 'Test Location', 
+      lat: lat || 40.7128, 
+      lng: lng || -74.0060 
+    };
+    
+    const alerts = await alertSoundService.checkWeatherAlerts(location);
+    res.json({ success: true, data: alerts });
+  } catch (error) {
+    console.error('Weather alert check error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get alert sound history
+router.get('/sound-history', async (req, res) => {
+  try {
+    const history = await alertSoundService.getAlertHistory();
+    res.json({ success: true, data: history });
+  } catch (error) {
+    console.error('Error fetching sound alert history:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get available sound types
+router.get('/sound-types', async (req, res) => {
+  try {
+    const soundTypes = alertSoundService.getSoundTypes();
+    res.json({ success: true, data: soundTypes });
+  } catch (error) {
+    console.error('Error fetching sound types:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Test specific alert type
+router.post('/test-alert', async (req, res) => {
+  try {
+    const { type, location } = req.body;
+    const testLocation = location || { name: 'Test Location', lat: 40.7128, lng: -74.0060 };
+    
+    // Create a test alert of the specified type
+    const testAlert = {
+      type: type || 'rain',
+      location: testLocation.name,
+      coordinates: `${testLocation.lat}, ${testLocation.lng}`,
+      severity: 'moderate',
+      shouldAlert: true,
+      weather: {
+        temperature: 25,
+        humidity: 70,
+        precipitation: type === 'rain' || type === 'flood' ? 30 : 0,
+        windSpeed: type === 'storm' || type === 'tornado' ? 35 : 10,
+        condition: `${type.charAt(0).toUpperCase() + type.slice(1)} Test Condition`
+      },
+      message: `Test ${type} alert for ${testLocation.name}`,
+      timestamp: new Date().toISOString()
+    };
+    
+    await alertSoundService.triggerAlert(testAlert);
+    await alertSoundService.saveAlertHistory(testAlert);
+    
+    res.json({ success: true, data: testAlert });
+  } catch (error) {
+    console.error('Test alert error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 module.exports = router;

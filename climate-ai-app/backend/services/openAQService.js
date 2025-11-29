@@ -1,17 +1,30 @@
-const fetch = require('node-fetch');
+// openAQService.js
+const axios = require('axios');
 
-const BASE_URL = 'https://api.openaq.org/v2';
-const OPENAQ_API_KEY = 'ec865842222b48e328f2f7a15c93773bb1b099afdbc598e465b9107dd67feaf2'; // Provided API key
-
-class OpenAQService {
-  async getCityAirQuality(city) {
-    const url = `${BASE_URL}/latest?city=${encodeURIComponent(city)}&api_key=${OPENAQ_API_KEY}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`OpenAQ API error: ${response.status}`);
-    }
-    return await response.json();
+async function getAirQuality(lat, lng) {
+  const url = `https://api.openaq.org/v2/nearest?coordinates=${lat},${lng}&radius=10000&order_by=distance&limit=1`;
+  const res = await axios.get(url);
+  if (!res.data || !res.data.results || res.data.results.length === 0) {
+    return null;
   }
+  const measurements = res.data.results[0].measurements;
+  // Map measurements to a key-value object
+  const aq = {};
+  for (const m of measurements) {
+    aq[m.parameter] = m.value;
+  }
+  return {
+    pm25: aq.pm25 || 'N/A',
+    pm10: aq.pm10 || 'N/A',
+    no2: aq.no2 || 'N/A',
+    o3: aq.o3 || 'N/A',
+    co: aq.co || 'N/A',
+    so2: aq.so2 || 'N/A',
+    unit: measurements[0]?.unit || '',
+    source: res.data.results[0].location || '',
+  };
 }
 
-module.exports = new OpenAQService(); 
+module.exports = {
+  getAirQuality,
+}; 

@@ -1,30 +1,23 @@
-const fetch = require('node-fetch');
+// climatiqService.js
+const axios = require('axios');
 
-const CLIMATIQ_API_KEY = '89Y8JM11RX7Q5ADG5AK8RPXVHR'; // Provided API key
-const BASE_URL = 'https://api.climatiq.io';
+const CLIMATIQ_API_KEY = '43B2A4BTGS3558SMQ7DF86NPTG';
+const BASE_URL = 'https://beta3.api.climatiq.io';
 
-class ClimatiqService {
-  async calculateCarbon({ activity_type, parameters }) {
-    const url = `${BASE_URL}/estimate`;
-    const body = {
-      emission_factor: { activity_id: activity_type, data_version: '23.23' },
-      parameters
-    };
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${CLIMATIQ_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Climatiq API error details:', errorText);
-      throw new Error(`Climatiq API error: ${response.status}`);
-    }
-    return await response.json();
-  }
+async function estimateCarbon(activityType, params) {
+  const url = `${BASE_URL}/estimate`;
+  const headers = {
+    Authorization: `Bearer ${CLIMATIQ_API_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  const body = {
+    emission_factor: { activity_id: activityType },
+    parameters: params,
+  };
+  const res = await axios.post(url, body, { headers });
+  return res.data;
 }
 
-module.exports = new ClimatiqService(); 
+module.exports = {
+  estimateCarbon,
+}; 

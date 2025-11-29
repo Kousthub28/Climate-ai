@@ -1,78 +1,86 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-class IBMWeatherService {
+class OpenWeatherService {
   constructor() {
-    this.apiKey = 'fe119406-4111-4cd8-8418-6f0074ee5a12'; // Hardcoded API key
-    this.baseUrl = 'https://api.weather.com/v3'; // Hardcoded base URL
+    this.apiKey = '0e356836821fe7c66466877bd63f9ee7'; // <-- User's OpenWeatherMap API key
+    this.baseUrl = 'https://api.openweathermap.org/data/2.5';
   }
 
   async getCurrentWeather(lat, lng) {
     try {
-      const url = `${this.baseUrl}/wx/conditions/current?geocode=${lat},${lng}&format=json&apiKey=${this.apiKey}`;
+      const url = `${this.baseUrl}/weather?lat=${lat}&lon=${lng}&units=metric&appid=${this.apiKey}`;
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
       
       const response = await fetch(url, {
+        signal: controller.signal,
         headers: {
-          'Accept': 'application/json'
+          'User-Agent': 'ClimateAI-App/1.0'
         }
       });
-
-      if (!response.ok) {
-        throw new Error(`Weather API error: ${response.status}`);
-      }
-
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) throw new Error(`Weather API error: ${response.status}`);
       const data = await response.json();
-      return this.formatCurrentWeather(data);
+      return {
+        temperature: data.main.temp,
+        humidity: data.main.humidity,
+        pressure: data.main.pressure,
+        windSpeed: data.wind.speed,
+        windDirection: data.wind.deg,
+        visibility: data.visibility / 1000,
+        condition: data.weather[0].main,
+        description: data.weather[0].description,
+        icon: data.weather[0].icon
+      };
     } catch (error) {
       console.error('Current weather error:', error);
-      // Return mock data if API fails
-      return this.getMockCurrentWeather(lat, lng);
+      throw error; // Re-throw to let the frontend handle it
     }
   }
 
   async getForecast(lat, lng, days = 7) {
     try {
-      const url = `${this.baseUrl}/forecast/daily/10day?geocode=${lat},${lng}&units=m&language=en-US&format=json`;
+      const url = `${this.baseUrl}/forecast?lat=${lat}&lon=${lng}&units=metric&appid=${this.apiKey}`;
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
       
       const response = await fetch(url, {
+        signal: controller.signal,
         headers: {
-          'X-IBM-Client-Id': this.apiKey,
-          'Accept': 'application/json'
+          'User-Agent': 'ClimateAI-App/1.0'
         }
       });
-
-      if (!response.ok) {
-        throw new Error(`Forecast API error: ${response.status}`);
-      }
-
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) throw new Error(`Forecast API error: ${response.status}`);
       const data = await response.json();
-      return this.formatForecast(data, days);
+      // OpenWeatherMap returns 3-hour intervals, so you may want to process this for daily summaries
+      return data.list.map(item => ({
+        date: item.dt_txt,
+        temperature: item.main.temp,
+        condition: item.weather[0].main,
+        description: item.weather[0].description,
+        icon: item.weather[0].icon,
+        precipitation: item.rain ? item.rain['3h'] || 0 : 0,
+        humidity: item.main.humidity,
+        windSpeed: item.wind.speed
+      }));
     } catch (error) {
       console.error('Forecast error:', error);
-      // Return mock data if API fails
-      return this.getMockForecast(lat, lng, days);
+      throw error; // Re-throw to let the frontend handle it
     }
   }
 
   async getWeatherAlerts(lat, lng) {
-    try {
-      const url = `${this.baseUrl}/wx/alerts/headlines?geocode=${lat},${lng}&format=json&apiKey=${this.apiKey}`;
-      
-      const response = await fetch(url, {
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Alerts API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return this.formatAlerts(data);
-    } catch (error) {
-      console.error('Weather alerts error:', error);
-      return [];
-    }
+    // OpenWeatherMap alerts are not available on free plan
+    return [];
   }
 
   formatCurrentWeather(data) {
@@ -160,5 +168,5 @@ class IBMWeatherService {
   }
 }
 
-module.exports = new IBMWeatherService();
+module.exports = new OpenWeatherService();
 

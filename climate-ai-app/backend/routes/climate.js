@@ -1,6 +1,8 @@
 const express = require('express');
 const ClimateAnalysis = require('../models/ClimateAnalysis');
 const { auth } = require('../middleware/auth');
+const { getGranitePrediction } = require('../services/ibmGraniteService');
+const axios = require('axios'); // Add at the top if not present
 
 const router = express.Router();
 
@@ -156,6 +158,31 @@ router.get('/risk/:lat/:lng', auth, async (req, res) => {
       success: false,
       message: 'Error generating risk assessment'
     });
+  }
+});
+
+// Granite AI prediction endpoint
+router.post('/granite-predict', async (req, res) => {
+  try {
+    const weatherData = req.body;
+    const prediction = await getGranitePrediction(weatherData);
+    res.json({ success: true, prediction });
+  } catch (error) {
+    console.error('Granite prediction error:', error);
+    res.status(500).json({ success: false, message: 'Granite prediction failed', error: error.message });
+  }
+});
+
+// Gemini AI prediction endpoint
+router.post('/gemini-predict', async (req, res) => {
+  try {
+    const weatherData = req.body;
+    const prompt = `\nGiven the following weather data for ${weatherData.city}, ${weatherData.country}:\n- Temperature: ${weatherData.temperature}°C\n- Humidity: ${weatherData.humidity}%\n- Wind speed: ${weatherData.windSpeed} km/h\n- Precipitation: ${weatherData.precipitation} mm\n- Description: ${weatherData.description}\n\nIs the weather rainy, sunny, a heatwave, hurricane, flood, or something else? Explain your reasoning.`;
+    const geminiRes = await axios.post('http://localhost:5001/ask_gemini', { question: prompt });
+    res.json({ success: true, prediction: geminiRes.data.answer });
+  } catch (error) {
+    console.error('Gemini prediction error:', error);
+    res.status(500).json({ success: false, message: 'Gemini prediction failed', error: error.message });
   }
 });
 
