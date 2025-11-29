@@ -1,5 +1,554 @@
 [
   {
+    "type": "storm",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 26.424923501850106,
+      "windSpeed": 38.965618460748324,
+      "condition": "Severe Weather"
+    },
+    "message": "Severe storm warning for Sydney - High winds detected",
+    "timestamp": "2025-11-29T17:06:52.758Z",
+    "sentAt": "2025-11-29T17:06:52.763Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 26.424923501850106,
+      "humidity": 84.84512833094911,
+      "precipitation": 19.647174698919468,
+      "condition": "Severe Weather"
+    },
+    "message": "Moderate rain detected in Sydney",
+    "timestamp": "2025-11-29T17:06:52.758Z",
+    "sentAt": "2025-11-29T17:06:52.760Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "heatwave",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 37.10838312453183,
+      "humidity": 44.14139968628815,
+      "condition": "Rain"
+    },
+    "message": "High heat conditions in Mumbai",
+    "timestamp": "2025-11-29T17:06:52.753Z",
+    "sentAt": "2025-11-29T17:06:52.757Z",
+    "soundFile": "heat-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 37.10838312453183,
+      "humidity": 44.14139968628815,
+      "precipitation": 15.4445458186657,
+      "condition": "Rain"
+    },
+    "message": "Moderate rain detected in Mumbai",
+    "timestamp": "2025-11-29T17:06:52.753Z",
+    "sentAt": "2025-11-29T17:06:52.755Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 34.185673887041844,
+      "windSpeed": 11.495179439206762,
+      "condition": "Storm"
+    },
+    "message": "Severe storm warning for Tokyo - High winds detected",
+    "timestamp": "2025-11-29T17:06:52.742Z",
+    "sentAt": "2025-11-29T17:06:52.752Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 34.185673887041844,
+      "humidity": 34.468376009995836,
+      "precipitation": 25.0800501744046,
+      "condition": "Storm"
+    },
+    "message": "Flood warning issued for Tokyo - High precipitation levels detected",
+    "timestamp": "2025-11-29T17:06:52.742Z",
+    "sentAt": "2025-11-29T17:06:52.748Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 34.185673887041844,
+      "humidity": 34.468376009995836,
+      "precipitation": 25.0800501744046,
+      "condition": "Storm"
+    },
+    "message": "Heavy rain detected in Tokyo",
+    "timestamp": "2025-11-29T17:06:52.742Z",
+    "sentAt": "2025-11-29T17:06:52.744Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "heatwave",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 24.24858058788064,
+      "humidity": 63.98741338983706,
+      "condition": "Heat Wave"
+    },
+    "message": "High heat conditions in London",
+    "timestamp": "2025-11-29T17:06:52.689Z",
+    "sentAt": "2025-11-29T17:06:52.741Z",
+    "soundFile": "heat-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 24.24858058788064,
+      "humidity": 63.98741338983706,
+      "precipitation": 14.628687991258804,
+      "condition": "Heat Wave"
+    },
+    "message": "Moderate rain detected in London",
+    "timestamp": "2025-11-29T17:06:52.689Z",
+    "sentAt": "2025-11-29T17:06:52.732Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 18.878812659940355,
+      "humidity": 74.2984402009742,
+      "precipitation": 48.59684940386231,
+      "condition": "Clear"
+    },
+    "message": "Flood warning issued for New York - High precipitation levels detected",
+    "timestamp": "2025-11-29T17:06:52.490Z",
+    "sentAt": "2025-11-29T17:06:52.685Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 18.878812659940355,
+      "humidity": 74.2984402009742,
+      "precipitation": 48.59684940386231,
+      "condition": "Clear"
+    },
+    "message": "Heavy rain detected in New York",
+    "timestamp": "2025-11-29T17:06:52.490Z",
+    "sentAt": "2025-11-29T17:06:52.579Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "heatwave",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "critical",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 41.893572774678006,
+      "humidity": 61.83152717670502,
+      "condition": "Rain"
+    },
+    "message": "Extreme heat conditions in Sydney",
+    "timestamp": "2025-11-29T16:45:28.425Z",
+    "sentAt": "2025-11-29T16:45:28.436Z",
+    "soundFile": "heat-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 41.893572774678006,
+      "humidity": 61.83152717670502,
+      "precipitation": 5.033114445570552,
+      "condition": "Rain"
+    },
+    "message": "Moderate rain detected in Sydney",
+    "timestamp": "2025-11-29T16:45:28.425Z",
+    "sentAt": "2025-11-29T16:45:28.430Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "heatwave",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "critical",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 42.39161696922306,
+      "humidity": 83.32065704564937,
+      "condition": "Heavy Rain"
+    },
+    "message": "Extreme heat conditions in Mumbai",
+    "timestamp": "2025-11-29T16:45:28.409Z",
+    "sentAt": "2025-11-29T16:45:28.422Z",
+    "soundFile": "heat-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 42.39161696922306,
+      "humidity": 83.32065704564937,
+      "precipitation": 23.066875249033792,
+      "condition": "Heavy Rain"
+    },
+    "message": "Heavy rain detected in Mumbai",
+    "timestamp": "2025-11-29T16:45:28.409Z",
+    "sentAt": "2025-11-29T16:45:28.413Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 20.899316153993574,
+      "humidity": 82.36502712211079,
+      "precipitation": 13.564966066813454,
+      "condition": "Cloudy"
+    },
+    "message": "Moderate rain detected in Tokyo",
+    "timestamp": "2025-11-29T16:45:28.401Z",
+    "sentAt": "2025-11-29T16:45:28.405Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 15.399835921435107,
+      "windSpeed": 22.696817903660495,
+      "condition": "Storm"
+    },
+    "message": "Severe storm warning for London - High winds detected",
+    "timestamp": "2025-11-29T16:45:28.275Z",
+    "sentAt": "2025-11-29T16:45:28.398Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 15.399835921435107,
+      "humidity": 78.31809495402402,
+      "precipitation": 46.060199443778835,
+      "condition": "Storm"
+    },
+    "message": "Flood warning issued for London - High precipitation levels detected",
+    "timestamp": "2025-11-29T16:45:28.275Z",
+    "sentAt": "2025-11-29T16:45:28.389Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 15.399835921435107,
+      "humidity": 78.31809495402402,
+      "precipitation": 46.060199443778835,
+      "condition": "Storm"
+    },
+    "message": "Heavy rain detected in London",
+    "timestamp": "2025-11-29T16:45:28.275Z",
+    "sentAt": "2025-11-29T16:45:28.368Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 43.21879599221268,
+      "windSpeed": 9.617093935721526,
+      "condition": "Storm"
+    },
+    "message": "Severe storm warning for New York - High winds detected",
+    "timestamp": "2025-11-29T16:45:27.771Z",
+    "sentAt": "2025-11-29T16:45:28.270Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "heatwave",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "critical",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 43.21879599221268,
+      "humidity": 82.5763727458336,
+      "condition": "Storm"
+    },
+    "message": "Extreme heat conditions in New York",
+    "timestamp": "2025-11-29T16:45:27.771Z",
+    "sentAt": "2025-11-29T16:45:28.132Z",
+    "soundFile": "heat-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 30.830719004762358,
+      "humidity": 52.46592969146147,
+      "precipitation": 16.281548411696033,
+      "condition": "Flood Warning"
+    },
+    "message": "Flood warning issued for Sydney - High precipitation levels detected",
+    "timestamp": "2025-11-29T16:35:35.056Z",
+    "sentAt": "2025-11-29T16:35:35.061Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Sydney",
+    "coordinates": "-33.8688, 151.2093",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 30.830719004762358,
+      "humidity": 52.46592969146147,
+      "precipitation": 16.281548411696033,
+      "condition": "Flood Warning"
+    },
+    "message": "Moderate rain detected in Sydney",
+    "timestamp": "2025-11-29T16:35:35.056Z",
+    "sentAt": "2025-11-29T16:35:35.059Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 15.464736897198177,
+      "windSpeed": 21.158331639652197,
+      "condition": "Storm"
+    },
+    "message": "Severe storm warning for Mumbai - High winds detected",
+    "timestamp": "2025-11-29T16:35:35.049Z",
+    "sentAt": "2025-11-29T16:35:35.055Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Mumbai",
+    "coordinates": "19.076, 72.8777",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 15.464736897198177,
+      "humidity": 32.614728402094634,
+      "precipitation": 14.879363404344147,
+      "condition": "Storm"
+    },
+    "message": "Moderate rain detected in Mumbai",
+    "timestamp": "2025-11-29T16:35:35.049Z",
+    "sentAt": "2025-11-29T16:35:35.053Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 32.05647779418677,
+      "windSpeed": 33.484034045554424,
+      "condition": "Cloudy"
+    },
+    "message": "Severe storm warning for Tokyo - High winds detected",
+    "timestamp": "2025-11-29T16:35:35.040Z",
+    "sentAt": "2025-11-29T16:35:35.047Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 32.05647779418677,
+      "humidity": 77.6521031140382,
+      "precipitation": 48.54795714603255,
+      "condition": "Cloudy"
+    },
+    "message": "Flood warning issued for Tokyo - High precipitation levels detected",
+    "timestamp": "2025-11-29T16:35:35.040Z",
+    "sentAt": "2025-11-29T16:35:35.044Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "Tokyo",
+    "coordinates": "35.6762, 139.6503",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 32.05647779418677,
+      "humidity": 77.6521031140382,
+      "precipitation": 48.54795714603255,
+      "condition": "Cloudy"
+    },
+    "message": "Heavy rain detected in Tokyo",
+    "timestamp": "2025-11-29T16:35:35.040Z",
+    "sentAt": "2025-11-29T16:35:35.042Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "storm",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 17.177159903326366,
+      "windSpeed": 37.0164615654189,
+      "condition": "Flood Warning"
+    },
+    "message": "Severe storm warning for London - High winds detected",
+    "timestamp": "2025-11-29T16:35:35.032Z",
+    "sentAt": "2025-11-29T16:35:35.040Z",
+    "soundFile": "storm-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 17.177159903326366,
+      "humidity": 58.74329128397575,
+      "precipitation": 10.487701686090533,
+      "condition": "Flood Warning"
+    },
+    "message": "Flood warning issued for London - High precipitation levels detected",
+    "timestamp": "2025-11-29T16:35:35.032Z",
+    "sentAt": "2025-11-29T16:35:35.037Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "London",
+    "coordinates": "51.5074, -0.1278",
+    "severity": "moderate",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 17.177159903326366,
+      "humidity": 58.74329128397575,
+      "precipitation": 10.487701686090533,
+      "condition": "Flood Warning"
+    },
+    "message": "Moderate rain detected in London",
+    "timestamp": "2025-11-29T16:35:35.032Z",
+    "sentAt": "2025-11-29T16:35:35.034Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
+    "type": "flood",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "severe",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 23.784003689822793,
+      "humidity": 86.90108392069068,
+      "precipitation": 44.11199898258794,
+      "condition": "Clear"
+    },
+    "message": "Flood warning issued for New York - High precipitation levels detected",
+    "timestamp": "2025-11-29T16:35:35.027Z",
+    "sentAt": "2025-11-29T16:35:35.031Z",
+    "soundFile": "flood-siren.wav"
+  },
+  {
+    "type": "rain",
+    "location": "New York",
+    "coordinates": "40.7128, -74.006",
+    "severity": "high",
+    "shouldAlert": true,
+    "weather": {
+      "temperature": 23.784003689822793,
+      "humidity": 86.90108392069068,
+      "precipitation": 44.11199898258794,
+      "condition": "Clear"
+    },
+    "message": "Heavy rain detected in New York",
+    "timestamp": "2025-11-29T16:35:35.027Z",
+    "sentAt": "2025-11-29T16:35:35.029Z",
+    "soundFile": "rain-siren.wav"
+  },
+  {
     "type": "heatwave",
     "location": "Sydney",
     "coordinates": "-33.8688, 151.2093",
@@ -1113,551 +1662,5 @@
     "timestamp": "2025-07-26T09:15:39.499Z",
     "sentAt": "2025-07-26T09:15:39.777Z",
     "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 36.419674527455626,
-      "humidity": 81.44540729513767,
-      "precipitation": 27.050351519641648,
-      "condition": "Severe Weather"
-    },
-    "message": "Heavy rain detected in Mumbai",
-    "timestamp": "2025-07-26T09:15:39.499Z",
-    "sentAt": "2025-07-26T09:15:39.653Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 29.715105240928658,
-      "humidity": 51.68500195343851,
-      "precipitation": 24.470033411956184,
-      "condition": "Cloudy"
-    },
-    "message": "Heavy rain detected in Tokyo",
-    "timestamp": "2025-07-26T09:15:39.289Z",
-    "sentAt": "2025-07-26T09:15:39.476Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 36.43606253700687,
-      "humidity": 43.63625856104876,
-      "condition": "Cloudy"
-    },
-    "message": "High heat conditions in London",
-    "timestamp": "2025-07-26T09:15:38.817Z",
-    "sentAt": "2025-07-26T09:15:39.198Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "moderate",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 36.43606253700687,
-      "humidity": 43.63625856104876,
-      "precipitation": 17.937808275980604,
-      "condition": "Cloudy"
-    },
-    "message": "Moderate rain detected in London",
-    "timestamp": "2025-07-26T09:15:38.817Z",
-    "sentAt": "2025-07-26T09:15:38.990Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "New York",
-    "coordinates": "40.7128, -74.006",
-    "severity": "critical",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 41.81928041716916,
-      "humidity": 89.12892855888174,
-      "condition": "Flood Warning"
-    },
-    "message": "Extreme heat conditions in New York",
-    "timestamp": "2025-07-26T09:15:37.828Z",
-    "sentAt": "2025-07-26T09:15:38.810Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "New York",
-    "coordinates": "40.7128, -74.006",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 41.81928041716916,
-      "humidity": 89.12892855888174,
-      "precipitation": 26.495782268063948,
-      "condition": "Flood Warning"
-    },
-    "message": "Flood warning issued for New York - High precipitation levels detected",
-    "timestamp": "2025-07-26T09:15:37.828Z",
-    "sentAt": "2025-07-26T09:15:38.584Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "New York",
-    "coordinates": "40.7128, -74.006",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 41.81928041716916,
-      "humidity": 89.12892855888174,
-      "precipitation": 26.495782268063948,
-      "condition": "Flood Warning"
-    },
-    "message": "Heavy rain detected in New York",
-    "timestamp": "2025-07-26T09:15:37.828Z",
-    "sentAt": "2025-07-26T09:15:38.043Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.539542558650126,
-      "windSpeed": 17.78671009329515,
-      "condition": "Storm"
-    },
-    "message": "Severe storm warning for Sydney - High winds detected",
-    "timestamp": "2025-07-26T09:07:54.156Z",
-    "sentAt": "2025-07-26T09:07:54.602Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "critical",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.539542558650126,
-      "humidity": 46.05762185095804,
-      "condition": "Storm"
-    },
-    "message": "Extreme heat conditions in Sydney",
-    "timestamp": "2025-07-26T09:07:54.156Z",
-    "sentAt": "2025-07-26T09:07:54.433Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "moderate",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.539542558650126,
-      "humidity": 46.05762185095804,
-      "precipitation": 13.229149316731526,
-      "condition": "Storm"
-    },
-    "message": "Moderate rain detected in Sydney",
-    "timestamp": "2025-07-26T09:07:54.156Z",
-    "sentAt": "2025-07-26T09:07:54.275Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 23.55235238218107,
-      "humidity": 50.80398408935652,
-      "precipitation": 33.447091165574584,
-      "condition": "Severe Weather"
-    },
-    "message": "Flood warning issued for Mumbai - High precipitation levels detected",
-    "timestamp": "2025-07-26T09:07:53.970Z",
-    "sentAt": "2025-07-26T09:07:54.151Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 23.55235238218107,
-      "humidity": 50.80398408935652,
-      "precipitation": 33.447091165574584,
-      "condition": "Severe Weather"
-    },
-    "message": "Heavy rain detected in Mumbai",
-    "timestamp": "2025-07-26T09:07:53.970Z",
-    "sentAt": "2025-07-26T09:07:53.986Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "tornado",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "critical",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 33.45450813506109,
-      "windSpeed": 8.926148292556624,
-      "condition": "Tornado Watch"
-    },
-    "message": "Tornado warning issued for Tokyo - Take immediate shelter",
-    "timestamp": "2025-07-26T09:07:53.792Z",
-    "sentAt": "2025-07-26T09:07:53.966Z",
-    "soundFile": "tornado-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 33.45450813506109,
-      "humidity": 39.041166174670074,
-      "precipitation": 35.26327645860914,
-      "condition": "Tornado Watch"
-    },
-    "message": "Flood warning issued for Tokyo - High precipitation levels detected",
-    "timestamp": "2025-07-26T09:07:53.792Z",
-    "sentAt": "2025-07-26T09:07:53.949Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 33.45450813506109,
-      "humidity": 39.041166174670074,
-      "precipitation": 35.26327645860914,
-      "condition": "Tornado Watch"
-    },
-    "message": "Heavy rain detected in Tokyo",
-    "timestamp": "2025-07-26T09:07:53.792Z",
-    "sentAt": "2025-07-26T09:07:53.926Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 19.378462545763604,
-      "windSpeed": 32.54889581406832,
-      "condition": "Cloudy"
-    },
-    "message": "Severe storm warning for London - High winds detected",
-    "timestamp": "2025-07-26T09:07:52.756Z",
-    "sentAt": "2025-07-26T09:07:53.789Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "moderate",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 19.378462545763604,
-      "humidity": 81.85909625882297,
-      "precipitation": 12.320624455928575,
-      "condition": "Cloudy"
-    },
-    "message": "Moderate rain detected in London",
-    "timestamp": "2025-07-26T09:07:52.756Z",
-    "sentAt": "2025-07-26T09:07:53.258Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "tornado",
-    "location": "New York",
-    "coordinates": "40.7128, -74.006",
-    "severity": "critical",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 30.225275479506294,
-      "windSpeed": 12.098876685012439,
-      "condition": "Tornado Watch"
-    },
-    "message": "Tornado warning issued for New York - Take immediate shelter",
-    "timestamp": "2025-07-26T09:07:52.535Z",
-    "sentAt": "2025-07-26T09:07:52.705Z",
-    "soundFile": "tornado-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 29.717947489516742,
-      "windSpeed": 26.857118231210606,
-      "condition": "Heat Wave"
-    },
-    "message": "Severe storm warning for Sydney - High winds detected",
-    "timestamp": "2025-07-26T08:56:21.693Z",
-    "sentAt": "2025-07-26T08:56:21.700Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 29.717947489516742,
-      "humidity": 53.22812850361025,
-      "condition": "Heat Wave"
-    },
-    "message": "High heat conditions in Sydney",
-    "timestamp": "2025-07-26T08:56:21.693Z",
-    "sentAt": "2025-07-26T08:56:21.696Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 34.808257218753596,
-      "humidity": 70.26040434885522,
-      "condition": "Heat Wave"
-    },
-    "message": "High heat conditions in Mumbai",
-    "timestamp": "2025-07-26T08:56:21.681Z",
-    "sentAt": "2025-07-26T08:56:21.692Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 34.808257218753596,
-      "humidity": 70.26040434885522,
-      "precipitation": 43.6376086825915,
-      "condition": "Heat Wave"
-    },
-    "message": "Flood warning issued for Mumbai - High precipitation levels detected",
-    "timestamp": "2025-07-26T08:56:21.680Z",
-    "sentAt": "2025-07-26T08:56:21.688Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Mumbai",
-    "coordinates": "19.076, 72.8777",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 34.808257218753596,
-      "humidity": 70.26040434885522,
-      "precipitation": 43.6376086825915,
-      "condition": "Heat Wave"
-    },
-    "message": "Heavy rain detected in Mumbai",
-    "timestamp": "2025-07-26T08:56:21.680Z",
-    "sentAt": "2025-07-26T08:56:21.684Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 38.33103567538591,
-      "windSpeed": 34.16624260661599,
-      "condition": "Storm"
-    },
-    "message": "Severe storm warning for Tokyo - High winds detected",
-    "timestamp": "2025-07-26T08:56:21.659Z",
-    "sentAt": "2025-07-26T08:56:21.680Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 38.33103567538591,
-      "humidity": 45.90651529259425,
-      "condition": "Storm"
-    },
-    "message": "High heat conditions in Tokyo",
-    "timestamp": "2025-07-26T08:56:21.659Z",
-    "sentAt": "2025-07-26T08:56:21.676Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 38.33103567538591,
-      "humidity": 45.90651529259425,
-      "precipitation": 49.9511211054512,
-      "condition": "Storm"
-    },
-    "message": "Flood warning issued for Tokyo - High precipitation levels detected",
-    "timestamp": "2025-07-26T08:56:21.659Z",
-    "sentAt": "2025-07-26T08:56:21.670Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Tokyo",
-    "coordinates": "35.6762, 139.6503",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 38.33103567538591,
-      "humidity": 45.90651529259425,
-      "precipitation": 49.9511211054512,
-      "condition": "Storm"
-    },
-    "message": "Heavy rain detected in Tokyo",
-    "timestamp": "2025-07-26T08:56:21.659Z",
-    "sentAt": "2025-07-26T08:56:21.667Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.79976750802811,
-      "windSpeed": 31.4572738123558,
-      "condition": "Storm"
-    },
-    "message": "Severe storm warning for London - High winds detected",
-    "timestamp": "2025-07-26T08:56:21.642Z",
-    "sentAt": "2025-07-26T08:56:21.657Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "heatwave",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "critical",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.79976750802811,
-      "humidity": 46.89223537827457,
-      "condition": "Storm"
-    },
-    "message": "Extreme heat conditions in London",
-    "timestamp": "2025-07-26T08:56:21.642Z",
-    "sentAt": "2025-07-26T08:56:21.653Z",
-    "soundFile": "heat-siren.wav"
-  },
-  {
-    "type": "flood",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.79976750802811,
-      "humidity": 46.89223537827457,
-      "precipitation": 48.69396846048931,
-      "condition": "Storm"
-    },
-    "message": "Flood warning issued for London - High precipitation levels detected",
-    "timestamp": "2025-07-26T08:56:21.642Z",
-    "sentAt": "2025-07-26T08:56:21.651Z",
-    "soundFile": "flood-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "London",
-    "coordinates": "51.5074, -0.1278",
-    "severity": "high",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 43.79976750802811,
-      "humidity": 46.89223537827457,
-      "precipitation": 48.69396846048931,
-      "condition": "Storm"
-    },
-    "message": "Heavy rain detected in London",
-    "timestamp": "2025-07-26T08:56:21.642Z",
-    "sentAt": "2025-07-26T08:56:21.647Z",
-    "soundFile": "rain-siren.wav"
-  },
-  {
-    "type": "storm",
-    "location": "New York",
-    "coordinates": "40.7128, -74.006",
-    "severity": "severe",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 25.360582739279042,
-      "windSpeed": 36.39598913135195,
-      "condition": "Clear"
-    },
-    "message": "Severe storm warning for New York - High winds detected",
-    "timestamp": "2025-07-26T08:56:21.638Z",
-    "sentAt": "2025-07-26T08:56:21.641Z",
-    "soundFile": "storm-siren.wav"
-  },
-  {
-    "type": "rain",
-    "location": "Sydney",
-    "coordinates": "-33.8688, 151.2093",
-    "severity": "moderate",
-    "shouldAlert": true,
-    "weather": {
-      "temperature": 18.324530303790535,
-      "humidity": 78.20792508162819,
-      "precipitation": 8.903247034017859,
-      "condition": "Heavy Rain"
-    },
-    "message": "Moderate rain detected in Sydney",
-    "timestamp": "2025-07-26T08:51:21.721Z",
-    "sentAt": "2025-07-26T08:51:21.733Z",
-    "soundFile": "rain-siren.wav"
   }
 ]
