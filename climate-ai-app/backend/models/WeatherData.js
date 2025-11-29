@@ -5,8 +5,8 @@ const weatherDataSchema = new mongoose.Schema({
     city: { type: String, required: true },
     country: { type: String, required: true },
     coordinates: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true }
+      type: { type: String, enum: ['Point'], required: true },
+      coordinates: { type: [Number], required: true }
     }
   },
   current: {

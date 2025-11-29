@@ -52,14 +52,21 @@ export const authAPI = {
 
 // Weather API
 export const weatherAPI = {
-  getCurrentWeather: (lat, lng, city, country) => 
-    api.get(`/weather/current/${lat}/${lng}?city=${city}&country=${country}`),
+  getCurrentWeather: (lat, lng, city, country) => {
+    let url = `/weather/current/${lat}/${lng}`;
+    const params = [];
+    if (city && city !== 'undefined') params.push(`city=${encodeURIComponent(city)}`);
+    if (country && country !== 'undefined') params.push(`country=${encodeURIComponent(country)}`);
+    if (params.length) url += '?' + params.join('&');
+    return api.get(url);
+  },
   getForecast: (lat, lng, city, country, days = 7) => 
     api.get(`/weather/forecast/${lat}/${lng}?city=${city}&country=${country}&days=${days}`),
   getAlerts: (lat, lng) => api.get(`/weather/alerts/${lat}/${lng}`),
   getHistory: (lat, lng, startDate, endDate, limit = 30) => 
     api.get(`/weather/history/${lat}/${lng}?startDate=${startDate}&endDate=${endDate}&limit=${limit}`),
   searchByCity: (cityName) => api.get(`/weather/search/${cityName}`),
+
 };
 
 // Climate API
@@ -123,6 +130,11 @@ export const alertsAPI = {
   sendTestAlert: (type, severity) => 
     api.post('/alerts/test', { type, severity }),
   dismissAlert: (alertId) => api.post(`/alerts/dismiss/${alertId}`),
+};
+
+// Poster GenAI API
+export const posterAPI = {
+  generatePoster: (userInput) => api.post('/genai-poster', { userInput }),
 };
 
 export default api;

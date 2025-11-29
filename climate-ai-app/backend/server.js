@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { fetchAndSendSevereWeatherAlerts } = require('./services/weatherAlertFetcher');
+const alertSoundService = require('./services/alertSoundService');
 
 // Load environment variables
 dotenv.config();
@@ -43,6 +44,36 @@ app.use('/api', require('./routes/genaiPoster'));
 setInterval(fetchAndSendSevereWeatherAlerts, 10 * 60 * 1000);
 // Optionally, run once on startup
 fetchAndSendSevereWeatherAlerts();
+
+// Schedule weather alert sound checking (every 5 minutes)
+const monitoredLocations = [
+  { name: 'New York', lat: 40.7128, lng: -74.0060 },
+  { name: 'London', lat: 51.5074, lng: -0.1278 },
+  { name: 'Tokyo', lat: 35.6762, lng: 139.6503 },
+  { name: 'Mumbai', lat: 19.0760, lng: 72.8777 },
+  { name: 'Sydney', lat: -33.8688, lng: 151.2093 }
+];
+
+setInterval(async () => {
+  try {
+    for (const location of monitoredLocations) {
+      await alertSoundService.checkWeatherAlerts(location);
+    }
+  } catch (error) {
+    console.error('Scheduled weather alert sound check failed:', error);
+  }
+}, 5 * 60 * 1000);
+
+// Run weather alert sound check once on startup
+(async () => {
+  try {
+    for (const location of monitoredLocations) {
+      await alertSoundService.checkWeatherAlerts(location);
+    }
+  } catch (error) {
+    console.error('Startup weather alert sound check failed:', error);
+  }
+})();
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

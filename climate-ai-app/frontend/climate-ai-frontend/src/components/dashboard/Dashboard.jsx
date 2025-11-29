@@ -16,6 +16,10 @@ import {
   MapPin,
   Calendar,
   Activity,
+  Lightbulb,
+  Clock,
+  CheckCircle,
+  TrendingDown,
 } from 'lucide-react';
 import { weatherAPI, carbonAPI, climateAPI, alertsAPI, urbanAPI } from '../../services/api';
 import '../../App.css';
@@ -26,8 +30,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({
     weather: null,
-    carbon: null,
-    urban: null,
     alerts: [],
     loading: true,
   });
@@ -42,18 +44,14 @@ const Dashboard = () => {
         const city = user?.profile?.location?.city || 'New York';
         const country = user?.profile?.location?.country || 'US';
 
-        const [weatherRes, carbonRes, alertsRes, urbanRes] = await Promise.allSettled([
+        const [weatherRes, alertsRes] = await Promise.allSettled([
           weatherAPI.getCurrentWeather(lat, lng, city, country),
-          carbonAPI.getHistory('7days'),
           alertsAPI.getAlerts(lat, lng),
-          urbanAPI.getSustainabilityMetrics(lat, lng),
         ]);
 
         setDashboardData(prev => ({
           ...prev,
           weather: weatherRes.status === 'fulfilled' ? weatherRes.value.data.data : null,
-          carbon: carbonRes.status === 'fulfilled' ? carbonRes.value.data.data : null,
-          urban: urbanRes.status === 'fulfilled' ? urbanRes.value.data : null,
           alerts: alertsRes.status === 'fulfilled' ? alertsRes.value.data.data.alerts : [],
           loading: false,
         }));
@@ -67,7 +65,7 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, [user]);
 
-  const { weather, carbon, alerts, loading } = dashboardData;
+  const { weather, alerts, loading } = dashboardData;
 
   if (loading) {
     return (
@@ -165,35 +163,6 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Carbon Footprint Card */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Carbon Footprint</CardTitle>
-              <Leaf className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {carbon?.current?.daily?.toFixed(1) || '--'} kg
-              </div>
-              <p className="text-xs text-muted-foreground">CO₂e today</p>
-              <div className="mt-2">
-                {carbon?.stats?.trend === 'decreasing' ? (
-                  <Badge variant="secondary" className="text-green-600 bg-green-100">
-                    ↓ Improving
-                  </Badge>
-                ) : carbon?.stats?.trend === 'increasing' ? (
-                  <Badge variant="secondary" className="text-red-600 bg-red-100">
-                    ↑ Increasing
-                  </Badge>
-                ) : (
-                  <Badge variant="secondary">
-                    → Stable
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Climate Risk Card */}
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -232,85 +201,68 @@ const Dashboard = () => {
               </div>
             </CardContent>
           </Card>
-
-          {/* Urban Planning (Sustainability Metrics) Card */}
-          {dashboardData.urban && (
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Urban Sustainability</CardTitle>
-                <Building className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {dashboardData.urban.overallScore || '--'} / 100
-                </div>
-                <p className="text-xs text-muted-foreground mb-2">Overall Sustainability Score</p>
-                <div className="space-y-1 text-xs">
-                  {dashboardData.urban.categories && Object.entries(dashboardData.urban.categories).map(([cat, val]) => (
-                    <div key={cat} className="flex justify-between">
-                      <span className="capitalize">{cat}</span>
-                      <span>{val.score || '--'} / 100</span>
-                    </div>
-                  ))}
-                </div>
-                {dashboardData.urban.trends && (
-                  <div className="mt-2 text-xs">
-                    <span className="font-medium">Trends: </span>
-                    {dashboardData.urban.trends.improving?.length > 0 && (
-                      <span className="text-green-600">Improving: {dashboardData.urban.trends.improving.join(', ')}</span>
-                    )}
-                    {dashboardData.urban.trends.stable?.length > 0 && (
-                      <span className="ml-2 text-yellow-600">Stable: {dashboardData.urban.trends.stable.join(', ')}</span>
-                    )}
-                    {dashboardData.urban.trends.declining?.length > 0 && (
-                      <span className="ml-2 text-red-600">Declining: {dashboardData.urban.trends.declining.join(', ')}</span>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Weather Forecast */}
+          {/* Environmental Activity Feed */}
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <CloudRain className="h-5 w-5" />
-                <span>7-Day Forecast</span>
+                <Activity className="h-5 w-5" />
+                <span>Environmental Activity Feed</span>
               </CardTitle>
-              <CardDescription>Weather outlook for the week</CardDescription>
+              <CardDescription>Your recent climate actions and tips</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {weather?.forecast?.slice(0, 7).map((day, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-2xl">{day.icon === '30' ? '⛅' : '🌤️'}</div>
-                      <div>
-                        <p className="font-medium">
-                          {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
-                        </p>
-                        <p className="text-sm text-muted-foreground">{day.condition}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">
-                        {day.temperature?.max?.toFixed(0)}° / {day.temperature?.min?.toFixed(0)}°
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {day.precipitation?.toFixed(0)}% rain
-                      </p>
+                {/* Daily Tip */}
+                <div className="flex items-start space-x-3 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+                  <Lightbulb className="h-5 w-5 text-green-600 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-green-800 dark:text-green-200">Daily Sustainability Tip</h4>
+                    <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                      Switch to LED bulbs to reduce energy consumption by up to 80%. This simple change can save you money and reduce your carbon footprint significantly.
+                    </p>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <Clock className="h-3 w-3 text-green-600" />
+                      <span className="text-xs text-green-600">Today's tip</span>
                     </div>
                   </div>
-                )) || (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <CloudRain className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Weather forecast will appear here</p>
+                </div>
+
+                {/* Recent Activity */}
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                    <CheckCircle className="h-4 w-4 text-blue-600" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Weather check completed</p>
+                    </div>
                   </div>
-                )}
+
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                    <TrendingDown className="h-4 w-4 text-purple-600" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-purple-800 dark:text-purple-200">Carbon footprint reduced</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/20">
+                    <Leaf className="h-4 w-4 text-orange-600" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-orange-800 dark:text-orange-200">Climate analysis requested</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-teal-50 dark:bg-teal-900/20">
+                    <Building className="h-4 w-4 text-teal-600" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-teal-800 dark:text-teal-200">Urban planning tools accessed</p>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </CardContent>
           </Card>

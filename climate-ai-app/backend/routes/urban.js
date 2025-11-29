@@ -1,6 +1,9 @@
 const express = require('express');
 const { auth } = require('../middleware/auth');
 const openAQService = require('../services/openAQService');
+const fs = require('fs');
+const path = require('path');
+const csvFilePath = path.join(__dirname, '../data/carbon_emissions_with_energy.csv');
 
 const router = express.Router();
 
@@ -176,6 +179,26 @@ router.get('/metrics', async (req, res) => {
     airQuality: 70,
     waterManagement: 75,
   });
+});
+
+// GET /api/urban/csv-analysis
+router.get('/csv-analysis', async (req, res) => {
+  try {
+    const csv = fs.readFileSync(csvFilePath, 'utf-8');
+    const lines = csv.split('\n').filter(Boolean);
+    const headers = lines[0].split(',').map(h => h.trim());
+    const data = lines.slice(1).map(line => {
+      const values = line.split(',');
+      const obj = {};
+      headers.forEach((h, i) => {
+        obj[h] = values[i] ? values[i].trim() : '';
+      });
+      return obj;
+    });
+    res.json({ headers, data });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to analyze urban CSV', details: err.message });
+  }
 });
 
 // Helper functions for mock data generation
