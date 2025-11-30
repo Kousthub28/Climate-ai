@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-backend-url.com/api' 
-  : '/api';
+// Use environment variable or fallback to /api for local development
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Create axios instance
 const api = axios.create({
