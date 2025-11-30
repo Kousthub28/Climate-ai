@@ -1,4 +1,5 @@
 // Netlify function for weather and climate endpoints
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -6,6 +7,10 @@ const headers = {
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Content-Type': 'application/json'
 };
+
+const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY || '0e356836821fe7c66466877bd63f9ee7';
+const OPENWEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const OPENAQ_API_URL = 'https://api.openaq.org/v2';
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -17,13 +22,15 @@ exports.handler = async (event) => {
     const { method } = event;
 
     if (path === 'current' && method === 'GET') {
-      return handleCurrentWeather(event);
+      return await handleCurrentWeather(event);
     } else if (path === 'forecast' && method === 'GET') {
-      return handleWeatherForecast(event);
+      return await handleWeatherForecast(event);
     } else if (path === 'climate' && method === 'GET') {
-      return handleClimateData(event);
+      return await handleClimateData(event);
     } else if (path === 'alerts' && method === 'GET') {
-      return handleClimateAlerts(event);
+      return await handleClimateAlerts(event);
+    } else if (path === 'air-quality' && method === 'GET') {
+      return await handleAirQuality(event);
     }
 
     return {
@@ -39,6 +46,191 @@ exports.handler = async (event) => {
     };
   }
 };
+
+async function handleCurrentWeather(event) {
+  try {
+    const { lat, lon, city } = event.queryStringParameters || {};
+    
+    if (!lat || !lon) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'lat and lon required' })
+      };
+    }
+
+    const url = `${OPENWEATHER_BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${OPENWEATHER_API_KEY}`;
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Weather API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        city: data.name,
+        temperature: data.main.temp,
+        feels_like: data.main.feels_like,
+        humidity: data.main.humidity,
+        wind_speed: data.wind.speed,
+        condition: data.weather[0].main,
+        description: data.weather[0].description,
+        icon: data.weather[0].icon,
+        timestamp: new Date().toISOString()
+      })
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: error.message })
+    };
+  }
+}
+
+async function handleWeatherForecast(event) {
+  try {
+    const { lat, lon, days = 5 } = event.queryStringParameters || {};
+    
+    if (!lat || !lon) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'lat and lon required' })
+      };
+    }
+
+    const url = `${OPENWEATHER_BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${OPENWEATHER_API_KEY}`;
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Forecast API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const forecast = {};
+    
+    data.list.forEach(item => {
+      const date = new Date(item.dt * 1000).toISOString().split('T')[0];
+      if (!forecast[date]) {
+        forecast[date] = {
+          date,
+          high: item.main.temp_max,
+          low: item.main.temp_min,
+          condition: item.weather[0].main,
+          description: item.weather[0].description,
+          precipitation: item.rain?.['3h'] || 0
+        };
+      } else {
+        forecast[date].high = Math.max(forecast[date].high, item.main.temp_max);
+        forecast[date].low = Math.min(forecast[date].low, item.main.temp_min);
+      }
+    });
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        forecast: Object.values(forecast).slice(0, parseInt(days))
+      })
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: error.message })
+    };
+  }
+}
+
+async function handleClimateData(event) {
+  // Return mock climate data (can be enhanced with real data sources)
+  const { city } = event.queryStringParameters || {};
+
+  const climateData = {
+    city: city || 'Global',
+    annual_temperature: 10.5,
+    annual_precipitation: 1050,
+    climate_zones: 'Humid Continental',
+    carbon_emissions_trend: 'Decreasing',
+    renewable_energy_percent: 35,
+    timestamp: new Date().toISOString()
+  };
+
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify(climateData)
+  };
+}
+
+async function handleClimateAlerts(event) {
+  const { city } = event.queryStringParameters || {};
+
+  const alerts = [
+    {
+      id: '1',
+      type: 'heat_wave',
+      severity: 'medium',
+      title: 'Temperature Alert',
+      description: 'Monitor temperature changes in your area',
+      start_date: new Date().toISOString(),
+      end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    }
+  ];
+
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({
+      city: city || 'Global',
+      alerts,
+      alert_count: alerts.length,
+      timestamp: new Date().toISOString()
+    })
+  };
+}
+
+async function handleAirQuality(event) {
+  try {
+    const { lat, lon, city } = event.queryStringParameters || {};
+    
+    if (!lat || !lon) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'lat and lon required' })
+      };
+    }
+
+    // Fallback to mock data since OpenAQ requires more complex setup
+    const airQuality = {
+      city: city || 'Current Location',
+      aqi: 'Good',
+      pm25: 12.5,
+      pm10: 25.3,
+      no2: 35.5,
+      o3: 65.2,
+      timestamp: new Date().toISOString()
+    };
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(airQuality)
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: error.message })
+    };
+  }
+}
 
 function handleCurrentWeather(event) {
   const { lat, lon, city } = event.queryStringParameters || {};

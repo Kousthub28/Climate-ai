@@ -1,15 +1,28 @@
-// Netlify serverless function for authentication endpoints
-import jwt from 'jsonwebtoken';
+// Netlify serverless function for authentication endpoints - WITH JWT & REAL FEATURES
+const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'climate-ai-secret-key-2024';
+const MONGODB_URI = process.env.MONGODB_URI;
 
-// Mock database - replace with MongoDB later
-const mockUsers = {
+// Mock user database (replace with MongoDB in production)
+let mockUsers = {
   'test@example.com': {
     id: '1',
     email: 'test@example.com',
     password: 'password123',
-    name: 'Test User'
+    name: 'Test User',
+    created_at: new Date().toISOString(),
+    profile: {
+      bio: 'Testing Climate AI',
+      avatar: '',
+      location: 'Test City'
+    },
+    carbon_tracker: {
+      daily: 0,
+      weekly: 0,
+      monthly: 0,
+      yearly: 0
+    }
   }
 };
 
