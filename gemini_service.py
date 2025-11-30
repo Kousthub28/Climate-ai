@@ -1,9 +1,17 @@
 from flask import Flask, request, jsonify
 import google.generativeai as genai
 import traceback
+import os
+from dotenv import load_dotenv
 
-# DIRECTLY SET YOUR GOOGLE API KEY HERE
-GOOGLE_API_KEY = "AIzaSyAGCoULx3pegAh-pYVp0uNlZEZP_KcrxKY"
+# Load environment variables
+load_dotenv()
+
+# Get API key from environment variable
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY not found in environment variables. Please set it in .env file")
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
